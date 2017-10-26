@@ -18,11 +18,12 @@ public class TypeReal extends TypeT
   public TYPE typeOf(){ return this.T;}        
   public double getValue(){ return this.real;}   
 
+  
   @Override
   public boolean equals(Object obj)
   { if(obj instanceof TypeReal)
     { TypeReal that=(TypeReal)obj;
-      return (this.T.equals(that.T)&&this.real==that.real);
+      return (this.T.equals(that.T))&&(Math.abs(this.real-that.real)<1.0e-6);
     }
     else { throw new RuntimeException("This obj="+obj+" is not of TypeReal");} 
   } 
@@ -39,8 +40,7 @@ public class TypeReal extends TypeT
   public CandidatesList refine(TypeT obj)
   { if(obj.typeOf().equals(this.typeOf()))
     { TypeReal that=(TypeReal)obj;
-      if(this.equals(that)){ return new CandidatesList(new Id(this),new CandidatesList());}    
-      else { return new CandidatesList(new Change(this, that), new CandidatesList());}  
+      return new CandidatesList(new Change(this, that), new CandidatesList());
     }
     else{ throw new RuntimeException(obj+"is NOT of TypeNat"); }  
   }        

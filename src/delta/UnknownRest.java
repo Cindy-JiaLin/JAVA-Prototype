@@ -41,8 +41,7 @@ public class UnknownRest extends Delta
     { TypeList origList=(TypeList)this.orig;
       TypeList targList=(TypeList)this.targ;
       if(origList.isEmptyList()&&targList.isEmptyList()) return new Sim(1.0,1.0);
-      else return new Sim(0.0, 1.0);
-          
+      else return new Sim(0.0, 1.0);   
     } 
     else return new Sim(0.0,1.0);
   } 

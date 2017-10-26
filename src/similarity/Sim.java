@@ -18,9 +18,9 @@ public class Sim
   
 @Override
   public String toString()
-  { long lwb_2_decimal=Math.round(this.lwb*100);
+  { double lwb_2_decimal=Math.round(this.lwb*100);
     double lwb=lwb_2_decimal/100;
-    long upb_2_decimal=Math.round(this.upb*100);
+    double upb_2_decimal=Math.round(this.upb*100);
     double upb=upb_2_decimal/100;
     StringBuilder buf=new StringBuilder();
     buf.append("["); buf.append(lwb); buf.append(","); buf.append(upb); buf.append("]");

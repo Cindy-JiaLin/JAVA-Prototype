@@ -80,11 +80,26 @@ public class DIFF {
         System.out.println("Delta:  "+d);
         System.out.println("Sim:    "+d.sim());
         
-                
-        //Write delta to a textfile
+        /* Test the solution process
+         * 
+        
+        Unknown unknown=new Unknown(resV1, resV2);
+        
+        System.out.println(unknown.sim());
+        CandidatesList refine_0=unknown.refine();
+        CandidatesList refine_0_sorted=new CandidatesList().insert_cands(refine_0);
+        System.out.println("refine_0_sorted\n"+refine_0_sorted+"\n");
+        
+        CandidatesList refine_1_sorted=refine_0_sorted.restCands().insert_cands(refine_0_sorted.fstDelta().refine());
+        System.out.println("refine_1_sorted\n"+refine_1_sorted+"\n");
+        
+        */
+        
+        /*Write delta to a textfile
         String fileName="testResult/Delta_Res/"+cutoff(args[2],".VALUE")+"_vs_"+cutoff(args[3],".VALUE")+".RES";
         String msg="\nTYPE: "+resTYPE+"\nTypeT 1:\n"+resV1+"\nTypeT 2:\n"+resV2+"\n"+"Delta :\n"+d+"\n";
         writefile(fileName, msg.toString());
+        */ 
        } 
     }
     //Writing the test result to a text file allows us to re-organise the format of the result

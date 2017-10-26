@@ -24,10 +24,10 @@ public class Change extends Delta
   { if(orig.typeOf().isREAL()&&targ.typeOf().isREAL()&&orig.typeOf().equals(targ.typeOf()))
     { TypeReal r1=(TypeReal) orig;
       TypeReal r2=(TypeReal) targ;
-      double v=1-Math.abs(r1.getValue()-r2.getValue())/orig.typeOf().getAcc();
-      if(Math.abs(r1.getValue()-r2.getValue())<orig.typeOf().getAcc())
-      { return new Sim(v,v);}
-      else return new Sim(0.0,0.0);
+      double acc=orig.typeOf().getAcc();
+      double v=1-(Math.abs(r1.getValue()-r2.getValue())/acc);
+      if(Math.abs(r1.getValue()-r2.getValue())<acc){ return new Sim(v,v);}
+      else{ return new Sim(0.0, 0.0);}
     }//Consider about real numbers
     else{ return new Sim(0.0,0.0);}//Except real numbers, the similarity interval of Change of other primitive type is [0.0, 0.0]
   }        
