@@ -1,0 +1,39 @@
+#
+#                            1 
+#                            |
+#           +--------------------------------+
+#           |                                |
+#           2                                4
+#           |                                | 
+#       +-------+                 +-----------------+---+
+#       |       |                 |                 |   |
+#       5       6                 7                 8   9
+#       |       |                 |                
+#     +---+   +---+   +---+---+---+---+---+---+   
+#     |   |   |   |   |   |   |   |   |   |   |  
+#     10  11  12  13  14  15  16  17  18  19  20
+#
+tree.(node.1, 
+      branches.lst.(car.tree.(node.2, 
+                              branches.lst.(car.tree.(node.5, 
+                                                      branches.lst.(car.tree.(node.10,branches.nil.unit),
+                                                                    cdr.lst.(car.tree.(node.11, branches.nil.unit), 
+                                                                             cdr.nil.unit))),
+                                            cdr.lst.(car.tree.(node.6, 
+                                                               branches.lst.(car.tree.(node.12,branches.nil.unit), 
+                                                                             cdr.lst.(car.tree.(node.13, branches.nil.unit), 
+                                                                                      cdr.nil.unit))),
+                                                     cdr.nil.unit))),
+                     cdr.lst.(car.tree.(node.4, 
+                                        branches.lst.(car.tree.(node.7, 
+                                                                branches.lst.(car.tree.(node.14, branches.nil.unit), 
+                                                                              cdr.lst.(car.tree.(node.15,branches.nil.unit), 
+                                                                                       cdr.lst.(car.tree.(node.16, branches.nil.unit), 
+                                                                                                cdr.lst.(car.tree.(node.18, branches.nil.unit),
+                                                                                                         cdr.lst.(car.tree.(node.19, branches.nil.unit),
+                                                                                                                  cdr.lst.(car.tree.(node.20, branches.nil.unit),
+                                                                                                                           cdr.nil.unit))))))),
+                                                      cdr.lst.(car.tree.(node.8, branches.nil.unit),
+                                                               cdr.lst.(car.tree.(node.9, branches.nil.unit),
+                                                                        cdr.nil.unit)))),
+                              cdr.nil.unit)))

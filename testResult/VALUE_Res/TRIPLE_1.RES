@@ -1,0 +1,2 @@
+
+TypeT: (fst.right.m,snd.5,trd.unit)

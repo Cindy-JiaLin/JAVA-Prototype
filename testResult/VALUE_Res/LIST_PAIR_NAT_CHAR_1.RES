@@ -1,0 +1,2 @@
+
+TypeT: [(fst.1,snd.a),(fst.2,snd.b),(fst.3,snd.c),(fst.4,snd.d),(fst.5,snd.e)]

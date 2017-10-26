@@ -1,0 +1,2 @@
+# Binary Tree of Nat
+REC(b: UNION( emptyBTREE.UNIT | btree.PRODUCT(fst.NAT*snd.b*trd.b)))

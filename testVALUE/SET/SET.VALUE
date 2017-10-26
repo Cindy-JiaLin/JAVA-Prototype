@@ -1,0 +1,4 @@
+# 300 can be read as a REAL TYPE, but when added to a set, must be 300.0
+
+{300.0, 165.6, 208.6, 233.3, 255.3}
+

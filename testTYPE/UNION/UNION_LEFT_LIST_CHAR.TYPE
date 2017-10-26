@@ -1,0 +1,1 @@
+UNION(left.LIST(CHAR)|right.PRODUCT(fst.CHAR*snd.BOOL))

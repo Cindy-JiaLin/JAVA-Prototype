@@ -1,0 +1,2 @@
+# Tree of Natural Numbers
+REC(t: UNION(emptyTREE.UNIT | tree.PRODUCT(node.NAT*branches.REC(n: UNION(nil.UNIT | lst.PRODUCT(car.t*cdr.n))))))

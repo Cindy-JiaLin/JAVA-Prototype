@@ -1,0 +1,1 @@
+PRODUCT(fst.UNION(left.NAT|right.CHAR)*snd.NAT*trd.UNIT)

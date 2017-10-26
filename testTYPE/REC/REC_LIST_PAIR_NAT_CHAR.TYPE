@@ -1,0 +1,1 @@
+REC(l:UNION(nil.UNIT|lst.PRODUCT(car.PRODUCT(fst.NAT*snd.CHAR)*cdr.l)))

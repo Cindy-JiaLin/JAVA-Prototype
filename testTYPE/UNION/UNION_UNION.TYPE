@@ -1,0 +1,1 @@
+UNION(left.UNION(other.NAT|none.UNIT)|right.REC(l:UNION(nil.UNIT|cons.PRODUCT(car.CHAR*cdr.l))))
