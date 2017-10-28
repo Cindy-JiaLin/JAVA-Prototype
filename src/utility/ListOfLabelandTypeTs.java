@@ -76,11 +76,11 @@ public class ListOfLabelandTypeTs extends TypeT
  //When compare two values of a specific PRODUCT TYPE, in the this.refine(that) method
  //The first step is map each value of TypeT in the original value to the corresponding value in the target value 
  //using Unknown class.
- public ListOfDeltas getUnknownDeltas(ListOfLabelandTypeTs that)
+ public ListOfLabelandDeltas getUnknownDeltas(ListOfLabelandTypeTs that)
  { if(this.size()!=that.size()){ throw new RuntimeException("Two product types, the size of them must be the same.");}
    else if(!this.isEmptyListOfLabelandTypeTs()&&!that.isEmptyListOfLabelandTypeTs())
-   { return new ListOfDeltas(new Unknown(this.head.getTypeT(), that.head.getTypeT()), this.rest.getUnknownDeltas(that.rest));}
-   else if(this.isEmptyListOfLabelandTypeTs()&&that.isEmptyListOfLabelandTypeTs()){ return new ListOfDeltas();}
+   { return new ListOfLabelandDeltas(new LabelandDelta(this.head.getLabel(), new Unknown(this.head.getTypeT(), that.head.getTypeT())), this.rest.getUnknownDeltas(that.rest));}
+   else if(this.isEmptyListOfLabelandTypeTs()&&that.isEmptyListOfLabelandTypeTs()){ return new ListOfLabelandDeltas();}
    else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandTypeTs getFinalDeltas() method.");}
  }             
 

@@ -2,24 +2,24 @@
 
 package delta;
 
-import utility.ListOfDeltas;
 import similarity.Sim;
 import solution.CandidatesList;
+import utility.ListOfLabelandDeltas;
 
 public class DeltaProduct extends Delta
-{ private final ListOfDeltas listofDeltas;
-  public DeltaProduct(ListOfDeltas listofDeltas){ this.listofDeltas=listofDeltas;}         
+{ private final ListOfLabelandDeltas listofLabelandDeltas;
+  public DeltaProduct(ListOfLabelandDeltas listofLabelandDeltas){ this.listofLabelandDeltas=listofLabelandDeltas;}         
   @Override
   public String toString()
   { StringBuilder buf=new StringBuilder();
-    buf.append("DeltaProduct:("); buf.append(this.listofDeltas);buf.append(")");
+    buf.append("DeltaProduct:("); buf.append(this.listofLabelandDeltas);buf.append(")");
     return buf.toString();
   }     
   @Override
-  public double weight(){ return this.listofDeltas.weight();}        
+  public double weight(){ return this.listofLabelandDeltas.weight();}        
 
   @Override
-  public Sim sim(){ return this.listofDeltas.sim();} 
+  public Sim sim(){ return this.listofLabelandDeltas.sim();} 
   @Override
-  public CandidatesList refine(){ return new CandidatesList(new DeltaProduct(this.listofDeltas.refine()),new CandidatesList());}        
+  public CandidatesList refine(){ return new CandidatesList(new DeltaProduct(this.listofLabelandDeltas.refine()),new CandidatesList());}        
 }

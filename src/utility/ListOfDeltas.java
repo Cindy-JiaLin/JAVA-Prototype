@@ -1,4 +1,4 @@
-
+// Used in the sets and multisets that have no labels
 package utility;
 
 import delta.Delta;

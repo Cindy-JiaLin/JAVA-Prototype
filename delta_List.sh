@@ -1,4 +1,0 @@
-
-java -cp lib dcprototype.DIFF -d testTYPE/LIST/LIST_NAT.TYPE testVALUE/LIST/LIST_NAT_1.VALUE testVALUE/LIST/LIST_NAT_2.VALUE
-
-

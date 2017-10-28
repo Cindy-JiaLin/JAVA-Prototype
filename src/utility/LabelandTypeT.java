@@ -1,8 +1,10 @@
 package utility;
 
+import solution.CandidatesList;
+import typeSystem.TYPE;
 import types.TypeT;
 
-public class LabelandTypeT 
+public class LabelandTypeT
 { private final String label;
     private final TypeT t;  
     public LabelandTypeT(String label, TypeT t){ this.label=label; this.t=t;}
@@ -22,6 +24,5 @@ public class LabelandTypeT
     { StringBuilder buf=new StringBuilder();
       buf.append(this.label);buf.append(".");buf.append(this.t);
       return buf.toString();
-    }          
-    
+    }           
 }

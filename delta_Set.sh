@@ -1,5 +1,0 @@
-
-java -cp lib dcprototype.DIFF -d testTYPE/SET/SET_REAL05.TYPE testVALUE/SET/SET_EX5.4.1_A.VALUE testVALUE/SET/SET_EX5.4.1_B.VALUE
-java -cp lib dcprototype.DIFF -d testTYPE/SET/SET_NAT.TYPE testVALUE/SET/SET_A.VALUE testVALUE/SET/SET_B.VALUE
-
-

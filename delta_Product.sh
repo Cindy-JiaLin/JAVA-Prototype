@@ -1,4 +1,4 @@
-
+# Test and get delta of values of PRODUCT TYPEs
 java -cp lib dcprototype.DIFF -d testTYPE/PRODUCT/PAIR.TYPE testVALUE/PRODUCT/PAIR_1.VALUE testVALUE/PRODUCT/PAIR_2.VALUE
 
 java -cp lib dcprototype.DIFF -d testTYPE/PRODUCT/PAIR_UNIT.TYPE testVALUE/PRODUCT/PAIR_UNIT.VALUE testVALUE/PRODUCT/PAIR_UNIT.VALUE

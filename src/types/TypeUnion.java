@@ -50,7 +50,7 @@ public class TypeUnion extends TypeT
   { if(obj.typeOf().equals(this.typeOf()))
     { TypeUnion that=(TypeUnion)obj;
       if(!this.label.equals(that.label))
-      { return new CandidatesList(new DeltaUnion(this.label+"-to-"+that.label, new Change(this,that)),new CandidatesList());}  
+      { return new CandidatesList(new DeltaUnion("dismatch: ("+this.label+"-to-"+that.label+")", new Change(this,that)),new CandidatesList());}  
       else{ return new CandidatesList(new DeltaUnion(this.label, new Unknown(this.t, that.t)),new CandidatesList());}  
     }
     else{ throw new RuntimeException("This obj="+obj+" is NOT the same of union type");}  

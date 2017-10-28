@@ -1,3 +1,5 @@
+# Test and get delta of PROMITIVE TYPES
+
 java -cp lib dcprototype.DIFF -d testTYPE/PRIMITIVE/UNIT.TYPE testVALUE/PRIMITIVE/UNIT.VALUE testVALUE/PRIMITIVE/UNIT.VALUE
 
 java -cp lib dcprototype.DIFF -d testTYPE/PRIMITIVE/BOOL.TYPE testVALUE/PRIMITIVE/BOOL_true.VALUE testVALUE/PRIMITIVE/BOOL_false.VALUE 
