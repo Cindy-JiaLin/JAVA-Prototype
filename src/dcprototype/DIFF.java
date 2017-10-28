@@ -11,8 +11,6 @@ import typeSystem.ParseVALUEresult;
 import typeSystem.TYPE;
 import types.TypeT;
 import delta.Delta;
-import delta.Unknown;
-import solution.CandidatesList;
 import utility.ListOfVars;
 import utility.FileParser;
 
@@ -32,7 +30,7 @@ public class DIFF {
         System.out.print("\nFileName: "+args[1]);
         String strTYPE=FileParser.readFileToString(args[1]);//read the file to a String
         ParseTYPEresult resTYPE=ParseTYPEresult.parseTYPE(new ListOfVars(), strTYPE);//parse TYPE
-        System.out.print("Unfold this type: \n"+TYPE.unfold(resTYPE.getResult())+"\n");
+        System.out.print(" Unfold this type: \n"+TYPE.unfold(resTYPE.getResult())+"\n");
         String fileName="testResult/TYPE_Res/"+cutoff(args[1],".TYPE")+".RES";
         String msg="\nFileName: "+args[1]+"\nparseTYPE: \n"+resTYPE+"\n"+"Unfold this type: \n"+TYPE.unfold(resTYPE.getResult())+"\n";
         writefile(fileName, msg.toString());

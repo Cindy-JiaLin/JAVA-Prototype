@@ -157,7 +157,7 @@ public class ParseVALUEresult
       str=head.getRest().trim();
       TypeList list=TypeList.EMPTY_LIST(T.getBaseTYPE()).ins(head.getResult());
       while(!str.startsWith("]"))
-      {   if(!str.startsWith(",")){ return error(str, "Expected a ',' between elements in list.");}
+      {   if(!str.startsWith(",")){ return error(str, "Expected a ',' between elements in TypeList.");}
         str=cutoff(str,",");
         ParseVALUEresult newEl=parseVALUE(T.getBaseTYPE(),str);
         str=newEl.getRest().trim();
@@ -175,7 +175,7 @@ public class ParseVALUEresult
       str=head.getRest().trim(); 
       TypeSet set=TypeSet.EMPTY_SET(T.getBaseTYPE()).add(head.getResult());
       while(!str.startsWith("}"))
-      {   if(!str.startsWith(",")){ return error(str, "Expected a ',' between elements in set.");}
+      {   if(!str.startsWith(",")){ return error(str, "Expected a ',' between elements in TypeSet.");}
         str=cutoff(str,",");
         ParseVALUEresult newEl=parseVALUE(T.getBaseTYPE(),str); 
         str=newEl.getRest().trim(); //System.out.println(str);
@@ -194,7 +194,7 @@ public class ParseVALUEresult
       str=head.getRest().trim();
       TypeMultiset mset=TypeMultiset.EMPTY_MSET(T.getBaseTYPE()).put(head.getResult());
       while(!str.startsWith("}}"))
-      {   if(!str.startsWith(",")){ return error(str, "Expected a ',' between elements in set.");}
+      {   if(!str.startsWith(",")){ return error(str, "Expected a ',' between elements in TypeMultiSet.");}
         str=cutoff(str,",");
         ParseVALUEresult newEl=parseVALUE(T.getBaseTYPE(),str);
         str=newEl.getRest().trim();
@@ -204,7 +204,22 @@ public class ParseVALUEresult
       return ok(mset,str);
     } 
     else if(T.isMAPPING())
-    { return error(str, "Labels have to exit in PRODUCT TYPE but they are not in MAPPING TYPE");
+    { if(!str.startsWith("[")){ return error(str, "Expected a '[' at the beginning of a MAPPING TYPE value.");}
+      str=cutoff(str,"[");
+      ParseVALUEresult head=parseVALUE(TYPE.PRODUCT(T.getMembers()),str);
+        if(head.getError()!=null){ return head;}  
+      str=head.getRest().trim();
+      TypeMapping mapping=TypeMapping.EMPTY_MAPPING(T).extend(head.getResult());
+      while(!str.startsWith("]"))
+      {   if(!str.startsWith(",")){ return error(str, "Expected a ',' between elements in MAPPING TYPE value.");}
+        str=cutoff(str,",");
+        ParseVALUEresult newEl=parseVALUE(TYPE.PRODUCT(T.getMembers()),str);
+        mapping=mapping.extend(newEl.getResult());
+        str=newEl.getRest().trim();
+      }
+        if(!str.startsWith("]")) { return error(str, "Expected a ']' at the end of typedMapping");}
+      str=cutoff(str,")");
+      return ok(mapping,str);   
     }      
     else { return error(str, "There is no other TYPE anymore.");}    
   }          

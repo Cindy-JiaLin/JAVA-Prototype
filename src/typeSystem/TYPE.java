@@ -5,14 +5,14 @@ import types.TypeList;
 import types.TypeMapping;
 import types.TypeMultiset;
 import types.TypeSet;
+import utility.LabelandTYPE;
 import utility.ListOfLabelandTYPEs;
 
 public class TYPE
 { private final String name;
   private final String varName;//For VAR TYPE and REC TYPE
   private final double acc;//For REAL TYPE, this is an accuracy number to measure the real numbers.
-  private final ListOfLabelandTYPEs labelandTYPEs;//For PRODUCT and UNION TYPEs
-  private final String label1, label2;//For MAPPING
+  private final ListOfLabelandTYPEs labelandTYPEs;//For PRODUCT, UNION and MAPPING TYPEs (the UNION TYPE only contains two TYPEs)
   private final TYPE T1, T2;//For SET,MSET,LIST and MAPPING
     
   private final static String sUNIT="UNIT";
@@ -31,27 +31,25 @@ public class TYPE
        
   // PRIMITIVE, UNIT, BOOL, NAT, CHAR
   private TYPE(String name)
-  { this.name=name; this.varName=null; this.acc=0; this.labelandTYPEs=null; this.label1=null; this.label2=null; this.T1=null; this.T2=null;}
+  { this.name=name; this.varName=null; this.acc=0; this.labelandTYPEs=null; this.T1=null; this.T2=null;}
   // REAL
   private TYPE(String name, double acc)
-  { this.name=name; this.varName=null; this.acc=acc; this.labelandTYPEs=null; this.label1=null; this.label2=null; this.T1=null; this.T2=null;}        
+  { this.name=name; this.varName=null; this.acc=acc; this.labelandTYPEs=null; this.T1=null; this.T2=null;}        
   // VAR
   private TYPE(String name, String varName)
-  { this.name=name; this.varName=varName; this.acc=0; this.labelandTYPEs=null; this.label1=null; this.label2=null; this.T1=null; this.T2=null;}
+  { this.name=name; this.varName=varName; this.acc=0; this.labelandTYPEs=null; this.T1=null; this.T2=null;}
   //SET, MSET, LIST: name is sSET, sMSET, or sLIST
   //this TYPE is the baseTYPE of SET, MSET and LIST.
   private TYPE(String name, TYPE baseTYPE)
-  { this.name=name; this.varName=null; this.acc=0; this.labelandTYPEs=null; this.label1=null; this.label2=null; this.T1=baseTYPE; this.T2=null;}
+  { this.name=name; this.varName=null; this.acc=0; this.labelandTYPEs=null; this.T1=baseTYPE; this.T2=null;}
   //REC: name is sREC
   //bodyTYPE contains VAR(varName)
   private TYPE(String name, String varName, TYPE bodyTYPE)
-  { this.name=name; this.varName=varName; this.acc=0; this.labelandTYPEs=null; this.label1=null; this.label2=null; this.T1=bodyTYPE; this.T2=null;}        
-  //MAPPING: name is sMAPPING
-  private TYPE(String name, String label1, String label2, TYPE T1, TYPE T2)
-  { this.name=name; this.varName=null; this.acc=0; this.labelandTYPEs=null; this.label1=label1; this.label2=label2; this.T1=T1; this.T2=T2;}    
-  //PRODUCT or UNION: name is sPRODUCT or sUNION, Ts.length>=2
+  { this.name=name; this.varName=varName; this.acc=0; this.labelandTYPEs=null; this.T1=bodyTYPE; this.T2=null;}        
+  //PRODUCT or UNION: name is sPRODUCT
+  //MAPPING, labelandTYPEs.length==2
   private TYPE(String name, ListOfLabelandTYPEs labelandTYPEs)
-  { this.name=name; this.varName=null; this.acc=0; this.labelandTYPEs=labelandTYPEs; this.label1=null; this.label2=null; this.T1=null; this.T2=null;}       
+  { this.name=name; this.varName=null; this.acc=0; this.labelandTYPEs=labelandTYPEs; this.T1=null; this.T2=null;}       
 
   public final static TYPE UNIT=new TYPE(sUNIT);
   public final static TYPE BOOL=new TYPE(sBOOL);
@@ -62,10 +60,12 @@ public class TYPE
   
   public final static TYPE PRODUCT(ListOfLabelandTYPEs labelandTYPEs){ return new TYPE(sPRODUCT,labelandTYPEs);}
   public final static TYPE UNION(ListOfLabelandTYPEs labelandTYPEs){ return new TYPE(sUNION, labelandTYPEs);}
+  public final static TYPE MAPPING(ListOfLabelandTYPEs labelandTYPEs){ return new TYPE(sMAPPING, labelandTYPEs);}
+  
   public final static TYPE SET(TYPE baseTYPE){ return new TYPE(sSET, baseTYPE);}
   public final static TYPE MSET(TYPE baseTYPE){ return new TYPE(sMSET, baseTYPE);}
   public final static TYPE LIST(TYPE baseTYPE){ return new TYPE(sLIST, baseTYPE);}
-  public final static TYPE MAPPING(String label1, String label2, TYPE T1, TYPE T2){return new TYPE(sMAPPING, label1, label2, T1, T2);}
+  
   
   public final static TYPE VAR(String varName){ return new TYPE(sVAR, varName);}
   public final static TYPE REC(String varName, TYPE TypeBody){ return new TYPE(sREC, varName, TypeBody);}
@@ -94,15 +94,15 @@ public class TYPE
   }
   //Get the labelandTYPEs from the corresponding PRODUCT or UNION TYPE.
   public ListOfLabelandTYPEs getMembers()
-  { if(isPRODUCT()||isUNION()){ return this.labelandTYPEs;}
-    else { throw new RuntimeException(this+" is not a PRODUCT or UNION TYPE.");}
+  { if(isPRODUCT()||isUNION()||isMAPPING()){ return this.labelandTYPEs;}
+    else { throw new RuntimeException(this+" is not a PRODUCT or UNION or MAPPING TYPE, we cannot get member TYPEs of them.");}
   }       
   //Get the baseTYPE of SET, MSET, LIST
   public TYPE getBaseTYPE()
   { if(isSET()||isMSET()||isLIST()){ return this.T1;}
-    else { throw new RuntimeException(this+" is not a SET, MSET or LIST TYPE.");}  
+    else { throw new RuntimeException(this+" is not a SET, MSET or LIST TYPE, we cannot get the baseTYPE of them.");}  
   } 
-  
+   
   private TypeList emptyList;
   public TypeList getEmptyList()
   { if (emptyList==null) emptyList=new TypeList(this);
@@ -126,24 +126,17 @@ public class TYPE
   { if (emptyMapping==null) emptyMapping=new TypeMapping(this);
     return emptyMapping; 
   }
-  //GET label1 and label2 in MAPPING
-  public String getLabel1()
-  { if(!isMAPPING()) throw new RuntimeException(this+" is not a MAPPING TYPE");
-    return this.label1;
-  }        
-  public String getLabel2()
-  { if(!isMAPPING()) throw new RuntimeException(this+" is not a MAPPING TYPE");
-    return this.label2;
-  }        
+       
   //GET domain and codomain TYPE in MAPPING
   public TYPE getDOM()
-  { if(!isMAPPING()) throw new RuntimeException(this+" is not a MAPPING TYPE.");
-    return this.T1;
+  { if(!isMAPPING()||this.labelandTYPEs.size()!=2) throw new RuntimeException(this+" is not a MAPPING TYPE.");
+    else{ return this.labelandTYPEs.head().getTYPE();}
   }
   public TYPE getCOD()
-  { if(!isMAPPING()) throw new RuntimeException(this+" is not a MAPPING TYPE.");
-    return this.T2;
+  { if(!isMAPPING()||this.labelandTYPEs.size()!=2) throw new RuntimeException(this+" is not a MAPPING TYPE.");
+    else{ return this.labelandTYPEs.rest().head().getTYPE();}
   }
+  
   //REC TYPE  
   //public final static TYPE REC(String varName, TYPE T){return new TYPE(sREC, varName, T);}
   public String getVarName()//return the varName not the sVAR.
@@ -167,10 +160,10 @@ public class TYPE
       //For Structured TYPEs, if they are the same TYPE, the name of them should be equals to each other.
       else if(this.isPRODUCT()&&that.isPRODUCT()){ return this.labelandTYPEs.equals(that.labelandTYPEs);}
       else if(this.isUNION()&&that.isUNION()){ return this.labelandTYPEs.equals(that.labelandTYPEs);}
+      else if(this.isMAPPING()&&that.isMAPPING()){ return this.labelandTYPEs.equals(that.labelandTYPEs);}
       else if(this.isSET()&&that.isSET()){ return this.T1.equals(that.T1);}
       else if(this.isMSET()&&that.isMSET()){ return this.T1.equals(that.T1);}
       else if(this.isLIST()&&that.isLIST()){ return this.T1.equals(that.T1);}
-      else if(this.isMAPPING()&&that.isMAPPING()){ return this.T1.equals(that.T1)&&this.T2.equals(that.T2);}
       else if(this.isVAR()&&that.isVAR()){ return this.varName==that.varName;}
       else if(this.isREC()||that.isREC())
       { if(this.isREC()&&that.isREC())
@@ -192,7 +185,7 @@ public class TYPE
     else if(isPRODUCT()){ return this.name+"("+this.labelandTYPEs.toString("*")+")";}
     else if(isUNION()){ return this.name+"("+this.labelandTYPEs.toString("|")+")";}
     else if(isSET()||isMSET()||isLIST()){ return this.name+"("+this.T1+")";}
-    else if(isMAPPING()){ return this.name+"("+this.T1+"=>"+this.T2+")";}
+    else if(isMAPPING()){ return this.name+"("+this.labelandTYPEs.toString("=>")+")";}
     else if(isREC()){return this.name+"("+this.varName+":"+this.T1+")";}
     else if(isVAR()){ return this.name+"("+this.varName+")";}
     else{ throw new RuntimeException("There is no other type at this stage, TYPE toString().");} 
@@ -204,9 +197,8 @@ public class TYPE
   public boolean contains(String varName)
   { if(isPRIMITIVE()){ return false;}
     else if(isREAL()){ return false;}
-    else if(isPRODUCT()||isUNION()){ return this.labelandTYPEs.contains(varName);}
+    else if(isPRODUCT()||isUNION()||isMAPPING()){ return this.labelandTYPEs.contains(varName);}
     else if(isSET()||this.isMSET()||this.isLIST()){ return this.T1.contains(varName);}
-    else if(isMAPPING()){ return this.T1.contains(varName)||this.T2.contains(varName);}
     else if(isVAR()){ return this.varName==varName;}//When the VAR TYPE is contains in TYPE body.
     else if(isREC()){ return this.varName==varName||this.T1.contains(varName);}
     else { throw new RuntimeException("There is no more TYPE at this stage, TYPE contains(varName).");}
@@ -217,10 +209,10 @@ public class TYPE
   { if(!contains(origVarName)){ return this;}
     else if(isPRODUCT()){ return PRODUCT(this.labelandTYPEs.unifyVarName(origVarName, targVarName));}
     else if(isUNION()){ return UNION(this.labelandTYPEs.unifyVarName(origVarName, targVarName));}
+    else if(isMAPPING()){ return MAPPING(this.labelandTYPEs.unifyVarName(origVarName, targVarName));}
     else if(isSET()){ return SET(this.T1.unifyVarName(origVarName, targVarName));}
     else if(isMSET()){ return MSET(this.T1.unifyVarName(origVarName, targVarName));}
     else if(isLIST()){ return LIST(this.T1.unifyVarName(origVarName, targVarName));}
-    else if(isMAPPING()){ return MAPPING(this.label1, this.label2, this.T1.unifyVarName(origVarName, targVarName), this.T2.unifyVarName(origVarName, targVarName));}
     else if(isVAR()){ return VAR(targVarName);}
     else if(isREC())
     { if(this.varName==origVarName){ return REC(targVarName, this.T1.unifyVarName(origVarName, targVarName));}
@@ -248,11 +240,11 @@ public class TYPE
   public static TYPE unfold(TYPE T)
   { if(T.isVAR()||T.isPRIMITIVE()||T.isREAL()){ return T;}
     else if(T.isPRODUCT()){ return PRODUCT(T.labelandTYPEs.unfold());}
-    else if(T.isUNION()){ return UNION(T.labelandTYPEs.unfold());}    
+    else if(T.isUNION()){ return UNION(T.labelandTYPEs.unfold());}  
+    else if(T.isMAPPING()){ return MAPPING(T.labelandTYPEs.unfold());}
     else if(T.isSET()){ return SET(unfold(T.getBaseTYPE()));}
     else if(T.isMSET()){ return MSET(unfold(T.getBaseTYPE()));}
     else if(T.isLIST()){ return LIST(unfold(T.getBaseTYPE()));}
-    else if(T.isMAPPING()){ return MAPPING(T.getLabel1(), T.getLabel2(), unfold(T.getDOM()), unfold(T.getCOD()));}
     else if(T.isREC()){ return substitute(T.varName, T, T.getBodyTYPE());}
     else { throw new RuntimeException("There is no other type at this stage.");}    
   } 

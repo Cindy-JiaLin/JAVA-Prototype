@@ -1,7 +1,6 @@
 
 package utility;
 
-
 import typeSystem.TYPE;
 
   //This class is used to represent the label and TYPE in PRODUCT and UNION TYPE.

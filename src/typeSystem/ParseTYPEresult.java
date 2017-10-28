@@ -125,6 +125,10 @@ public class ParseTYPEresult
     { Components comp=Components.accumulate(vars, str, "|", "UNION");
       return ok(TYPE.UNION(comp.getListofLabelandTYPEs()),comp.getStr());    
     }  
+    else if(str.startsWith("MAPPING"))
+    { Components comp=Components.accumulate(vars, str, "=>", "MAPPING");
+      return ok(TYPE.MAPPING(comp.getListofLabelandTYPEs()),comp.getStr());     
+    } 
     else if(str.startsWith("SET"))
     { ParseTYPEresult baseTYPE=getBaseTYPE(vars, str, "SET");
       return ok(TYPE.SET(baseTYPE.getResult()),baseTYPE.getRest());     
@@ -136,31 +140,7 @@ public class ParseTYPEresult
     else if(str.startsWith("LIST"))
     { ParseTYPEresult baseTYPE=getBaseTYPE(vars, str, "LIST");
       return ok(TYPE.LIST(baseTYPE.getResult()),baseTYPE.getRest());      
-    }
-    else if(str.startsWith("MAPPING"))
-    { str=cutoff(str,"MAPPING");
-        if(!str.startsWith("(")) return error(str, "Expected a '(' after MSET label.");
-      str=cutoff(str,"(");
-        int dotIndex1=str.indexOf(".");
-          if(dotIndex1==-1)throw new RuntimeException("Has no '.' in this str.");
-        String label1=str.substring(0, dotIndex1);
-        str=cutoff(str,label1+".");
-      ParseTYPEresult t1=parseTYPE(vars, str);
-        if(t1.getError()!=null) { return t1;}
-      str=t1.getRest().trim();
-        if(!str.startsWith("=>")) { return error(str, "Expected a '=>' between two TYPEs in MAPPING TYPE.");}
-      str=cutoff(str,"=>");
-        int dotIndex2=str.indexOf(".");
-          if(dotIndex2==-1)throw new RuntimeException("Has no '.' in this str.");
-        String label2=str.substring(0, dotIndex2);
-        str=cutoff(str,label2+".");
-      ParseTYPEresult t2=parseTYPE(vars, str);
-        if(t2.getError()!=null) { return t2;}
-      str=t2.getRest().trim();
-        if(!str.startsWith(")")) return error(str, "Expected a ')' at the end of SET TYPE");
-      str=cutoff(str,")");
-      return ok(TYPE.MAPPING(label1, label2, t1.getResult(),t2.getResult()),str);       
-    }  
+    } 
     else if(str.startsWith("REC"))
     { str=cutoff(str,"REC");
         if(!str.startsWith("(")) return error(str, "Expected a '(' after REC label.");

@@ -1,7 +1,5 @@
 package utility;
 
-import solution.CandidatesList;
-import typeSystem.TYPE;
 import types.TypeT;
 
 public class LabelandTypeT

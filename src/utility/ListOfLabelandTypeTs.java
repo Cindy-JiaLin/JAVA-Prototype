@@ -66,13 +66,14 @@ public class ListOfLabelandTypeTs extends TypeT
  { buf.append(this.head);
    if (!this.rest.isEmptyListOfLabelandTypeTs()){ buf.append(","); this.rest.dump(buf);}  
  } 
-    
-@Override
+
+//@Override
  public double weight()
  { if(!this.isEmptyListOfLabelandTypeTs()){ return this.head.getTypeT().weight()+this.rest.weight();}
    else if(this.isEmptyListOfLabelandTypeTs()){ return 0.0;}
    else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandTypeTs weigth() method.");}
  }   
+ 
  //When compare two values of a specific PRODUCT TYPE, in the this.refine(that) method
  //The first step is map each value of TypeT in the original value to the corresponding value in the target value 
  //using Unknown class.
@@ -82,18 +83,15 @@ public class ListOfLabelandTypeTs extends TypeT
    { return new ListOfLabelandDeltas(new LabelandDelta(this.head.getLabel(), new Unknown(this.head.getTypeT(), that.head.getTypeT())), this.rest.getUnknownDeltas(that.rest));}
    else if(this.isEmptyListOfLabelandTypeTs()&&that.isEmptyListOfLabelandTypeTs()){ return new ListOfLabelandDeltas();}
    else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandTypeTs getFinalDeltas() method.");}
- }             
+ }                
 
- @Override
- public TYPE typeOf() 
- {
-   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
- }
+    @Override
+    public TYPE typeOf() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
- @Override
- public CandidatesList refine(TypeT obj) 
- {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
- }
-    
+    @Override
+    public CandidatesList refine(TypeT obj) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
