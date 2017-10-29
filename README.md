@@ -32,4 +32,6 @@ Shell script (.sh) files used to test TYPE and value parsers, get and present th
 
 ./bin/delta_Union.sh to present difference and similarity of test values of UNION TYPE
 
-./bin/delta_Rec.sh to present difference and similarity of test values of REC TYPE
+./bin/delta_Recursive.sh to present difference and similarity of test values of REC TYPE
+
+./bin/delta_Sets.sh to present difference and similarity of test values of SET TYPE
