@@ -32,5 +32,7 @@ public class Change extends Delta
     else{ return new Sim(0.0,0.0);}//Except real numbers, the similarity interval of Change of other primitive type is [0.0, 0.0]
   }        
   @Override
+  //If seen Change as a type of difference between two values of PRIMITIVE TYPE
+  //This refine() method should never be called.
   public CandidatesList refine(){ return new CandidatesList(this,new CandidatesList());}        
 }

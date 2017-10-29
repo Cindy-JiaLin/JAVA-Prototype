@@ -22,6 +22,7 @@ public class DeltaList extends Delta
   
   @Override
   public Sim sim(){ return this.stepList.sim();} 
+  
   @Override
   public CandidatesList refine(){ return wrap_DeltaList(this.stepList.refine_StepList());}    
   

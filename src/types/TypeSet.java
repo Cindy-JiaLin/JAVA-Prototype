@@ -147,7 +147,7 @@ public class TypeSet extends TypeT
    { TypeSet that=(TypeSet)obj;//non-empty sets
      if(!this.isEmptySet()&&!that.isEmptySet())
      { ListOfDeltas allPairs=this.getEveryPair(that);
-       return (this.allDelPaths(this, that)).concat(that.allInsPaths(this, that)).concat(allPairPaths(allPairs, this, that));
+       return allPairPaths(allPairs, this, that);//.concat(this.allDelPaths(this, that)).concat(that.allInsPaths(this, that));
      }
      else if(this.isEmptySet()&&!that.isEmptySet())//this is empty, that is not empty
      { DeltaSet path=new DeltaSet(new StepList(new Insertion(that.head), new StepList(new UnknownRest(this, that.rest), new StepList())));

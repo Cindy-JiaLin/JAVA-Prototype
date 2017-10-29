@@ -2,7 +2,9 @@
 package types;
 
 import delta.Deletion;
+import delta.Delta;
 import delta.DeltaList;
+import delta.Id;
 import delta.Insertion;
 import delta.Unknown;
 import delta.UnknownRest;
@@ -88,25 +90,36 @@ public class TypeList extends TypeT
   public CandidatesList refine(TypeT obj)
   { if(obj.typeOf().equals(this.typeOf()))
     { TypeList that= (TypeList)obj;
-      if(!this.isEmptyList()&&!that.isEmptyList())// both are non-empty 
+      //If these two lists both are non-empty lists.
+      //This is the general case, there will be three possibilities.
+      //Each possibility only extend one step.
+      if(!this.isEmptyList()&&!that.isEmptyList()) 
       { DeltaList path1, path2, path3;
         path1=new DeltaList(new StepList(new Unknown(this.head, that.head), new StepList(new UnknownRest(this.rest, that.rest), new StepList())));  
         path2=new DeltaList(new StepList(new Deletion(this.head), new StepList(new UnknownRest(this.rest, that), new StepList())));
         path3=new DeltaList(new StepList(new Insertion(that.head), new StepList(new UnknownRest(this, that.rest), new StepList())));
-        //System.out.println("*********"+new CandidatesList(path1,new CandidatesList(path2, new CandidatesList(path3, new CandidatesList()))));
         return new CandidatesList(path1,new CandidatesList(path2, new CandidatesList(path3, new CandidatesList())));
       }
-      else
-      { DeltaList path;
-        if(this.isEmptyList()&&!that.isEmptyList())//this is empty, but that is not.
-        { path=new DeltaList(new StepList(new Insertion(that.head), new StepList(new UnknownRest(this, that.rest), new StepList())));}  
-        else if(!this.isEmptyList()&&that.isEmptyList())//this is non-empty, that is empty
-        { path=new DeltaList(new StepList(new Deletion(this.head), new StepList(new UnknownRest(this.rest, that), new StepList())));} 
-        else if(this.isEmptyList()&&that.isEmptyList())
-        { path=new DeltaList(new StepList());}//both empty
-        else{ throw new RuntimeException("Illegal constructor usage in TypeList refine() method.");}
+      //If one list is empty, while the other is not
+      //Only refine one step, the first element in "that" list will be inserted.
+      else if(this.isEmptyList()&&!that.isEmptyList())
+      { DeltaList path=new DeltaList(new StepList(new Insertion(that.head), new StepList(new UnknownRest(this, that.rest), new StepList())));
         return new CandidatesList(path,new CandidatesList());
-      }          
+      }  
+      //If one list is non-empty, while the other is empty
+      //Only refine one step, the first element in "this" list will be deleted.
+      else if(!this.isEmptyList()&&that.isEmptyList())
+      { DeltaList path=new DeltaList(new StepList(new Deletion(this.head), new StepList(new UnknownRest(this.rest, that), new StepList())));
+        return new CandidatesList(path,new CandidatesList());
+      } 
+      //If both lists are empty
+      //here used to implement the recursion when (UnknownRest [][]) to empty lists
+      //The case of two empty lists are dealt in the Unknown refine method.
+      else if(this.isEmptyList()&&that.isEmptyList())
+      { Delta path=new DeltaList(new StepList());
+        return new CandidatesList(path,new CandidatesList());
+      }
+      else{ throw new RuntimeException("Illegal constructor usage in TypeList refine() method.");}          
     }
     else{ throw new RuntimeException(obj+" is NOT of TypeList.");}  
   }        

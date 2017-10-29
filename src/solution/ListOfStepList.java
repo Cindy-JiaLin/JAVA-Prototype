@@ -7,17 +7,19 @@ public class ListOfStepList
   public ListOfStepList(){ this.head=null; this.rest=null;}//Constructor for empty list.
   public ListOfStepList(StepList head, ListOfStepList rest){ this.head=head; this.rest=rest;}//Constructor for non-empty list.
   
+  public boolean isEmptyListOfStepList(){ return this.head==null&&this.rest==null;}
+  
   public StepList head()
-  { if(this.head!=null&&this.rest!=null){ return this.head;}
-    else if(this.head==null&&this.rest==null){ throw new RuntimeException("Empty list has no head element.");}
+  { if(!this.isEmptyListOfStepList()){ return this.head;}
+    else if(this.isEmptyListOfStepList()){ throw new RuntimeException("Empty list has no head element.");}
     else { throw new RuntimeException("Illegal constructor usage in ListOfStepList head() method.");}
   }       
   public ListOfStepList rest()
-  { if(this.head!=null&&this.rest!=null){ return this.rest;}
-    else if(this.head==null&&this.rest==null){ return new ListOfStepList();}
+  { if(!this.isEmptyListOfStepList()){ return this.rest;}
+    else if(this.isEmptyListOfStepList()){ return new ListOfStepList();}
     else{ throw new RuntimeException("Illegal constructor usage in ListOfStepList rest() method.");}
   }      
-  public boolean isEmptyListOfStepList(){ return this.head==null&&this.rest==null;}
+  
   @Override
   public String toString()
   { StringBuffer buf=new StringBuffer();

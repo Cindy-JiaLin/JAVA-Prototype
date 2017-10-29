@@ -2,6 +2,7 @@
 package solution;
 
 import delta.Delta;
+import similarity.Sim;
 
 public class CandidatesList 
 { private final Delta fstDelta;
@@ -33,6 +34,8 @@ public class CandidatesList
     else if(this.isEmptyCandidatesList()){ return new CandidatesList();}
     else{ throw new RuntimeException("Illegal Constructor Usage in CandidatesList restCands() method.");}
   }
+  
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   public CandidatesList ins(Delta d)
   { if (this.isEmptyCandidatesList()) return new CandidatesList(d, new CandidatesList());
     else return new CandidatesList(d, this);
@@ -46,49 +49,60 @@ public class CandidatesList
   
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   public CandidatesList solutions()
-  { if(!this.isEmptyCandidatesList())//the restCands never be null, even if it is an empty CandidatesList
-    { if(!this.fstDelta.sim().isComplete())
-      { if(!this.restCands.isEmptyCandidatesList())
-        { return this.restCands.insert_cands(this.fstDelta.refine()).solutions();}
-        else{ return this.fstDelta.refine().solutions();}  
+  { //The restCands never be null, even if it is an empty CandidatesList
+    //The initial candidatesList=[Unknown(A,B)], hence it never be empty.
+    if(!this.isEmptyCandidatesList())
+    { //If the comparison is not completed, the fstDelta is a partial solution.
+      if(!this.fstDelta.sim().isComplete())
+      { //CandidatesList extends=this.fstDelta.refine();
+        //CandidatesList inserts=this.restCands.insert_cands(extends);
+        //CandidatesList again=inserts.solutions();  
+        return this.restCands.insert_cands(this.fstDelta.refine()).solutions();
+        //Here, whatever, the restCands is empty or not, by inserting the extends to the restCands makes sure the returned
+        //CandidatesList is sorted.
       }
-      else//
-      { if(!this.restCands.isEmptyCandidatesList()){ return new CandidatesList(this.fstDelta, this.restCands.solutions());}
+      else//If the first solution shows they are already completely compared, the fstDelta will be the final solution.
+      { //However, if the restCands still not empty, the restCands.solutions() is used to research all other solution candidates.
+        if(!this.restCands.isEmptyCandidatesList()){ return new CandidatesList(this.fstDelta, this.restCands.solutions());}
         else{ return new CandidatesList(this.fstDelta, new CandidatesList());}  
       } 
     }
-    else if(this.isEmptyCandidatesList()){ return new CandidatesList();}
+    else if(this.isEmptyCandidatesList()){ throw new RuntimeException("This CandidatesList should never be empty.");}
     else{ throw new RuntimeException("Illegal Constructor Usage in CandidatesList solutions() method.");}
   }
   
       
-  
+  //Insert the newCands to a sorted curCands=this
+  //this candidatesList must have been sorted.
   public CandidatesList insert_cands(CandidatesList newCands)
   { if(!newCands.isEmptyCandidatesList())
-    { //System.out.println("current cands list="+this);
-      //System.out.println("new cands list="+newCands);
-      return this.insert_cand(newCands.fstDelta).insert_cands(newCands.restCands);}
+    { return this.insert_cand(newCands.fstDelta).insert_cands(newCands.restCands);}
     else if(newCands.isEmptyCandidatesList()){ return this;}
     else{ throw new RuntimeException("Illegal Constructor Usage in CandidatesList insert_cands() method.");}
   }  
   // Insert a cand to a sorted CandidatesList
   public CandidatesList insert_cand(Delta newCand)
   { if(!this.isEmptyCandidatesList())
-    { double curLwb=this.fstDelta().sim().lwb();
-      double curUpb=this.fstDelta().sim().upb();
-      double newLwb=newCand.sim().lwb();
-      double newUpb=newCand.sim().upb();
+    { Sim curSim=this.fstDelta().sim();
+      Sim newSim=newCand.sim();
+     
       //Prune the impossible branch
-      if(newUpb < curLwb){ return this;}
-      //If newLwb==curLwb, 
-      //However double value cannot be identical
-      //When their difference is minor enough, we think they are equal
-      if((Math.abs(newLwb-curLwb) < 1.0e-6))
-      { if(newUpb >= curUpb){ return new CandidatesList(newCand, this);}
-        else{ return new CandidatesList(this.fstDelta, this.restCands.insert_cand(newCand));}//(newUpb<curUpb)
-      }  
-      else if(newLwb > curLwb){ return new CandidatesList(newCand, this);}
-      else { return new CandidatesList(this.fstDelta, this.restCands.insert_cand(newCand));}      
+      //curSim.upb<newSim.lwb, the curCand=this.fstDelta will be pruned
+      if(curSim.pruneOld(newSim)){ return this.restCands.insert_cand(newCand);}
+      //Otherwise, newSim.upb<curSim.lwb, the newCand will be pruned
+      else if(curSim.pruneNew(newSim)){ return this;}
+      // lower bound of them are identical, the upb of them will be compared
+      else if(curSim.equalLwb(newSim))
+      { //curSim.upb>=newSim.upb, curCand=this.fstDelta will be kept, the newCand will be inserted to the rest cands list
+        if(curSim.higherUpb(newSim)){ return new CandidatesList(this.fstDelta, this.restCands.insert_cand(newCand));}
+        //Otherwise, curSim.upb<newSim.upb, the newCand will be put in front of this cands list
+        else { return new CandidatesList(newCand, this);}
+      }   
+      //If the lwb of them are not identical
+      //When curSim.lwb>newSim.lwb, the newCand will be inserted into the rest cands
+      else if(curSim.higherLwb(newSim)){ return new CandidatesList(this.fstDelta, this.restCands.insert_cand(newCand));}
+      //Otherwise, curSim.lwb<newSim.lwb, the newCand will be the first one in the cands list.
+      else{ return new CandidatesList(newCand, this);}
     }
     else if(this.isEmptyCandidatesList()){ return new CandidatesList(newCand,new CandidatesList());}
     else{ throw new RuntimeException("Illegal Constructor Usage in CandidatesList insert_cand() method.");}
