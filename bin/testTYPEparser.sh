@@ -42,3 +42,4 @@ java -cp lib dcprototype.DIFF -t testTYPE/SET/SET_PAIR_NAT_CHAR.TYPE
 
 # Parse TYPE of MAPPINGs
 java -cp lib dcprototype.DIFF -t testTYPE/MAPPING/MAPPING_NAT_CHAR.TYPE
+java -cp lib dcprototype.DIFF -t testTYPE/MAPPING/MAPPING_REAL05_REAL05.TYPE

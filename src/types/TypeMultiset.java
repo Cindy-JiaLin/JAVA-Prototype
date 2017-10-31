@@ -106,7 +106,7 @@ public class TypeMultiset extends TypeT
     else return this.rest.getRestSet(t).put(this.head);
   }        
   private static CandidatesList allPairPaths(ListOfDeltas listUnknowns, TypeMultiset x, TypeMultiset y)
-  { if(x.isEmptyMultiset()||y.isEmptyMultiset()) return new CandidatesList();
+  { if(listUnknowns.isEmptyListOfDeltas()||x.isEmptyMultiset()||y.isEmptyMultiset()) return new CandidatesList();
     else//x and y both are nonempty Multisets
     { if(!(listUnknowns.head() instanceof Unknown)) throw new RuntimeException("Here should be instance of Unknown");
       else
@@ -141,7 +141,7 @@ public class TypeMultiset extends TypeT
    { TypeMultiset that=(TypeMultiset)obj;
      if(!this.isEmptyMultiset()&&!that.isEmptyMultiset())
      { ListOfDeltas allPairs=this.getEveryPair(that);
-       return allPairPaths(allPairs, this, that).concat(this.allDelPaths(this, that)).concat(that.allInsPaths(this, that));
+       return allPairPaths(allPairs, this, that);//.concat(this.allDelPaths(this, that)).concat(that.allInsPaths(this, that));
      }
      else if(this.isEmptyMultiset()&&!that.isEmptyMultiset())//this is empty, that is not empty
      { DeltaMultiset path=new DeltaMultiset(new StepList(new Insertion(that.head), new StepList(new UnknownRest(this, that.rest), new StepList())));

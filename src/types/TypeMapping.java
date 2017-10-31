@@ -78,15 +78,11 @@ public class TypeMapping extends TypeT
   }   
   //This method is used to convert a TypeMapping to a TypeSet
   public TypeSet map_to_set()
-  { LabelandTYPE aLabelandTYPE=new LabelandTYPE(a.getLabel(),this.T.getDOM());
-    LabelandTYPE bLabelandTYPE=new LabelandTYPE(b.getLabel(),this.T.getCOD());
-    ListOfLabelandTYPEs pairLabelandTYPEs=new ListOfLabelandTYPEs(aLabelandTYPE, new ListOfLabelandTYPEs(bLabelandTYPE, new ListOfLabelandTYPEs()));
-    
-    ListOfLabelandTypeTs pairLabelandTypeTs=new ListOfLabelandTypeTs(a,new ListOfLabelandTypeTs(b,new ListOfLabelandTypeTs()));
-    if(this.isEmptyMapping()) return new TypeSet(TYPE.PRODUCT(pairLabelandTYPEs));
+  { if(this.isEmptyMapping()) return new TypeSet(TYPE.PRODUCT(this.T.getMembers()));
     else
-    { return new TypeSet(TYPE.PRODUCT(pairLabelandTYPEs), new TypeProduct(TYPE.PRODUCT(pairLabelandTYPEs),pairLabelandTypeTs), this.rest.map_to_set());} 
-  }        
+    { ListOfLabelandTypeTs pairLabelandTypeTs=new ListOfLabelandTypeTs(a,new ListOfLabelandTypeTs(b,new ListOfLabelandTypeTs()));
+      return new TypeSet(TYPE.PRODUCT(this.T.getMembers()), new TypeProduct(TYPE.PRODUCT(this.T.getMembers()),pairLabelandTypeTs), this.rest.map_to_set());} 
+  }   
   
   @Override
   public double weight() { return this.map_to_set().weight(); }

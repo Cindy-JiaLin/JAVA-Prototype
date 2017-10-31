@@ -5,7 +5,8 @@ java -cp lib dcprototype.DIFF -d testTYPE/SET/SET_REAL05.TYPE testVALUE/SET/SET_
 # Test one set is non-empty, while the other is empty
 java -cp lib dcprototype.DIFF -d testTYPE/SET/SET_REAL05.TYPE testVALUE/SET/SET_Empty_REAL05.VALUE testVALUE/SET/SET_EX5.4.1_B.VALUE
 # Test both sets are non-emtpy sets
-#java -cp lib dcprototype.DIFF -d testTYPE/SET/SET_REAL05.TYPE testVALUE/SET/SET_EX5.4.1_A.VALUE testVALUE/SET/SET_EX5.4.1_B.VALUE
+# Implement the Example 5.4.1 on page 79 and the Example 5.4.3 on page 82
+java -Xss5M -cp lib dcprototype.DIFF -d testTYPE/SET/SET_REAL05.TYPE testVALUE/SET/SET_EX5.4.1_A.VALUE testVALUE/SET/SET_EX5.4.1_B.VALUE
 
 
 # Two simple tests
