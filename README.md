@@ -26,12 +26,9 @@ Shell script (.sh) files used to test TYPE and value parsers, get and present th
 
 ./bin/testVALUEparser.sh to parse all given VALUEs with their TYPE in testVALUE
 
-./bin/delta_Primitive.sh to present difference and similarity of test values of PRIMITIVE TYPE
+./bin/testExamples.sh to test Examples in the Thesis
 
-./bin/delta_Product.sh to present difference and similarity of test values of PRODUCT TYPE
-
-./bin/delta_Union.sh to present difference and similarity of test values of UNION TYPE
-
-./bin/delta_Recursive.sh to present difference and similarity of test values of REC TYPE
-
-./bin/delta_Sets.sh to present difference and similarity of test values of SET TYPE
+Examples for the differnece and the similarity:
+1. Sets: Example 5.4.1 on page 79 and Example 5.4.3 on page 82
+2. Multisets: Example 5.5.1 on page 86 and Example 5.5.3 on page 89
+3. Mappings: Example 5.6.1 on page 92 and Example 5.6.2 on page 94
