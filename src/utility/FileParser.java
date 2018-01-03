@@ -4,9 +4,6 @@ package utility;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import typeSystem.TYPE;
-import types.TypeChar;
-import types.TypeList;
 
 
 public class FileParser 

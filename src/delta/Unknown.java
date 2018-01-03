@@ -5,11 +5,9 @@ import similarity.Sim;
 import solution.CandidatesList;
 import types.TypeList;
 import types.TypeMultiset;
-import types.TypeProduct;
 import types.TypeRec;
 import types.TypeSet;
 import types.TypeUnion;
-import utility.ListOfLabelandTypeTs;
 
 //Since in TypeT there is no value represented by null
 //The orig and targ in Unknown are never be null.
@@ -19,13 +17,11 @@ public class Unknown extends Delta
   public TypeT orig(){ return this.orig;}
   public TypeT targ(){ return this.targ;}
   @Override
-  public String toString()
-  { StringBuilder buf=new StringBuilder();
-    buf.append("Unknown: "); buf.append(this.orig); buf.append(","); buf.append(this.targ);
-    return buf.toString();
-  }   
+  public String toString(){ return "Unknown("+this.orig.toString()+","+this.targ.toString()+")";}   
   @Override
-  public double weight(){ return this.orig.weight()+this.targ.weight();}        
+  public double weight(){ return this.orig.weight()+this.targ.weight();}  
+  public double increase(){ return 0.0;}
+  public double decrease(){ return 0.0;}
 
   // The initial similarity interval of uknown is [0,1].
   @Override
@@ -38,7 +34,7 @@ public class Unknown extends Delta
       { TypeList list1=(TypeList) this.orig;
         TypeList list2=(TypeList) this.targ;
         if(list1.isEmptyList()&&list2.isEmptyList())
-        { return new CandidatesList(new Id(list1), new CandidatesList());}
+        { return new CandidatesList(new Copy(list1), new CandidatesList());}
         else return list1.refine(list2);
       } 
       // Compare two empty sets
@@ -46,7 +42,7 @@ public class Unknown extends Delta
       { TypeSet set1=(TypeSet) this.orig;
         TypeSet set2=(TypeSet) this.targ;
         if(set1.isEmptySet()&&set2.isEmptySet())
-        { return new CandidatesList(new Id(set1), new CandidatesList());}
+        { return new CandidatesList(new Copy(set1), new CandidatesList());}
         else return set1.refine(set2);
       }
       // Compare two empty multisets
@@ -54,7 +50,7 @@ public class Unknown extends Delta
       { TypeMultiset mset1=(TypeMultiset) this.orig;
         TypeMultiset mset2=(TypeMultiset) this.targ;
         if(mset1.isEmptyMultiset()&&mset2.isEmptyMultiset())
-        { return new CandidatesList(new Id(mset1), new CandidatesList());}
+        { return new CandidatesList(new Copy(mset1), new CandidatesList());}
         else return mset1.refine(mset2);
       } 
       else if(this.orig.typeOf().isREC() && this.targ.typeOf().isREC())
@@ -64,7 +60,7 @@ public class Unknown extends Delta
         { TypeUnion insideUnion1 = (TypeUnion) rec1.getBody();
           TypeUnion insideUnion2 = (TypeUnion) rec2.getBody();
           if(insideUnion1.isNil()&&insideUnion2.isNil())
-          { return new CandidatesList(new Id(rec1), new CandidatesList());}
+          { return new CandidatesList(new Copy(rec1), new CandidatesList());}
           else return rec1.refine(rec2);
         }    
         else throw new RuntimeException("The type body of recursive type is only union currently.");

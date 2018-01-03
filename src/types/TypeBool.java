@@ -1,6 +1,6 @@
 
 package types;
-import delta.Id;
+import delta.Copy;
 import delta.Change;
 
 import typeSystem.TYPE;
@@ -39,7 +39,7 @@ public class TypeBool extends TypeT
   public CandidatesList refine(TypeT obj)
   { if (obj.typeOf().equals(this.typeOf()))
     { TypeBool that=(TypeBool)obj;
-      if(this.equals(that)){ return new CandidatesList(new Id(this),new CandidatesList());}    
+      if(this.equals(that)){ return new CandidatesList(new Copy(this),new CandidatesList());}    
       else{ return new CandidatesList(new Change(this,that),new CandidatesList());}
     }
     else{throw new RuntimeException(obj+" is NOT of TypeBool.");}    

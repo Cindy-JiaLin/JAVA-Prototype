@@ -12,13 +12,11 @@ public class DeltaList extends Delta
   public DeltaList(StepList stepList){ this.stepList=stepList;}      
   public StepList getStepList(){ return this.stepList;}        
   @Override
-  public String toString()
-  { StringBuilder buf=new StringBuilder();
-    buf.append(this.sim()); buf.append(", DeltaList: "); buf.append(this.stepList);
-    return buf.toString();
-  }  
+  public String toString(){ return "DeltaList: "+this.stepList.toString();}  
   @Override
-  public double weight(){ return this.stepList.weight();}       
+  public double weight(){ return this.stepList.weight();} 
+  public double increase(){ return this.stepList.increase();}
+  public double decrease(){ return this.stepList.decrease();}
   
   @Override
   public Sim sim(){ return this.stepList.sim();} 

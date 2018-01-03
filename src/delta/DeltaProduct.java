@@ -10,13 +10,11 @@ public class DeltaProduct extends Delta
 { private final ListOfLabelandDeltas listofLabelandDeltas;
   public DeltaProduct(ListOfLabelandDeltas listofLabelandDeltas){ this.listofLabelandDeltas=listofLabelandDeltas;}         
   @Override
-  public String toString()
-  { StringBuilder buf=new StringBuilder();
-    buf.append("DeltaProduct:("); buf.append(this.listofLabelandDeltas);buf.append(")");
-    return buf.toString();
-  }     
+  public String toString(){ return "DeltaProduct:("+this.listofLabelandDeltas.toString()+")";}     
   @Override
-  public double weight(){ return this.listofLabelandDeltas.weight();}        
+  public double weight(){ return this.listofLabelandDeltas.weight();}  
+  public double increase(){ return this.listofLabelandDeltas.increase();}
+  public double decrease(){ return this.listofLabelandDeltas.decrease();}
 
   @Override
   public Sim sim(){ return this.listofLabelandDeltas.sim();} 

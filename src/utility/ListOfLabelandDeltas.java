@@ -6,9 +6,23 @@ import similarity.Sim;
 public class ListOfLabelandDeltas 
 { private final LabelandDelta head;
   private final ListOfLabelandDeltas rest;
-  public ListOfLabelandDeltas(){ this.head=null; this.rest=null;}//Constructor for empty ListOfDeltas.
+  private final double weight;
+  private final double increment;
+  private final double decrement;
+  public ListOfLabelandDeltas()
+  { this.head=null; this.rest=null; this.weight=0.0; this.increment=0.0; this.decrement=0.0;}//Constructor for empty ListOfDeltas.
   public ListOfLabelandDeltas(LabelandDelta head, ListOfLabelandDeltas rest)
-  { this.head=head; this.rest=rest;}//Constructor for non-empty ListOfLabelandDeltas.        
+  { this.head=head; 
+    this.rest=rest;
+    this.weight=this.head.getDelta().weight()+this.rest.weight();
+    this.increment=this.head.getDelta().increase()+this.rest.increase();
+    this.decrement=this.head.getDelta().decrease()+this.rest.decrease();
+  }//Constructor for non-empty ListOfLabelandDeltas.        
+  
+  
+  public double weight(){ return this.weight;} 
+  public double increase(){ return this.increment;}
+  public double decrease(){ return this.decrement;}
   
   public boolean isEmptyListOfLabelandDeltas(){ return this.head==null&&this.rest==null;}
   
@@ -32,20 +46,12 @@ public class ListOfLabelandDeltas
   { buf.append(this.head);
     if (!rest.isEmptyListOfLabelandDeltas()){ buf.append(", "); this.rest.dump(buf);}
   }  
-  public double weight()
-  { if(!this.isEmptyListOfLabelandDeltas()) return this.head.getDelta().weight()+this.rest.weight();
-    else return 0.0;
-  }   
+    
  
   public Sim sim()
-  { if(!this.isEmptyListOfLabelandDeltas()) 
-    { double headWeight=this.head.getDelta().weight();
-      double restWeight=this.rest.weight();
-      double weight=headWeight+restWeight;
-      Sim headSim=this.head.getDelta().sim();
-      Sim restSim=this.rest.sim();
-      double lwb=(headWeight*headSim.lwb()+restWeight*restSim.lwb())/weight;
-      double upb=(headWeight*headSim.upb()+restWeight*restSim.upb())/weight;
+  { if(!this.isEmptyListOfLabelandDeltas())// non-empty listOfLabelandDeltas the weight is not 0
+    { double lwb=increase()/weight();
+      double upb=1-decrease()/weight();
       return new Sim(lwb,upb);
     }
     else return new Sim(0.0,0.0);

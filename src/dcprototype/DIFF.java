@@ -96,7 +96,7 @@ public class DIFF {
         Delta d= TypeT.delta(model1, model2);
         System.out.println("Delta:  "+d);
         System.out.println("Sim:    "+d.sim());
-        
+
         //Write delta to a textfile
         String fileName="testResult/Delta_Res/"+cutoff(args[2],".VALUE")+"_vs_"+cutoff(args[3],".VALUE")+".RES";
         String msg="\nTYPE: "+resTYPE+"\nTypeT 1:\n"+resV1+"\nTypeT 2:\n"+resV2+"\n"+"Delta :\n"+d+"\n";

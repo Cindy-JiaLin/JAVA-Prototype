@@ -1,6 +1,6 @@
 
 package types;
-import delta.Id;
+import delta.Copy;
 
 import typeSystem.TYPE;
 
@@ -27,7 +27,7 @@ public class TypeUnit extends TypeT
   public double weight(){ return 1.0;}
   @Override
   public CandidatesList refine(TypeT obj)
-  { if (obj.typeOf().equals(this.typeOf())){ return new CandidatesList(new Id(this),new CandidatesList());}
+  { if (obj.typeOf().equals(this.typeOf())){ return new CandidatesList(new Copy(this),new CandidatesList());}
     else{throw new RuntimeException(obj+" is NOT of TypeUnit.");} 
   }        
 }

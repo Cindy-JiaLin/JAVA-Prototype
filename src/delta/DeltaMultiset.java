@@ -11,13 +11,11 @@ public class DeltaMultiset extends Delta
   public DeltaMultiset(StepList stepList){ this.stepList=stepList;}      
   public StepList getStepList(){ return this.stepList;}        
   @Override
-  public String toString()
-  { StringBuilder buf=new StringBuilder();
-    buf.append(this.sim()); buf.append("\nDeltaMultiset: "); buf.append(this.stepList);
-    return buf.toString();
-  }  
+  public String toString(){ return "DeltaMultiset: "+this.stepList.toString();}  
   @Override
-  public double weight(){ return this.stepList.weight();}       
+  public double weight(){ return this.stepList.weight();}  
+  public double increase(){ return this.stepList.increase();}
+  public double decrease(){ return this.stepList.decrease();}
   @Override
   public Sim sim(){ return this.stepList.sim();} 
   @Override

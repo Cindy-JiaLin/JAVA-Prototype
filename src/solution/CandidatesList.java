@@ -51,6 +51,7 @@ public class CandidatesList
     //The initial candidatesList=[Unknown(A,B)], hence it never be empty.
     if(!this.isEmptyCandidatesList())
     { //If the comparison is not completed, the fstDelta is a partial solution.
+      //System.out.println(this.fstDelta+"sim="+this.fstDelta.sim());
       if(!this.fstDelta.sim().isComplete())
       { //CandidatesList extends=this.fstDelta.refine();
         //CandidatesList inserts=this.restCands.insert_cands(extends);

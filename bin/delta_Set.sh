@@ -19,5 +19,9 @@ java -Xss100M -cp lib dcprototype.DIFF -d testTYPE/SET/SET_REAL05.TYPE testVALUE
 
 java -Xss100M -cp lib dcprototype.DIFF -d testTYPE/SET/SET_PAIRS.TYPE testVALUE/SET/SET_EX5.6.1_f.VALUE testVALUE/SET/SET_EX5.6.1_g.VALUE
 
-java -cp lib dcprototype.DIFF -d testTYPE/SET/SET_CUBOID.TYPE testVALUE/SET/SET_CUBOID_A.VALUE testVALUE/SET/SET_CUBOID_B.VALUE
+#java -cp lib dcprototype.DIFF -d testTYPE/SET/SET_CUBOID.TYPE testVALUE/SET/SET_CUBOID_A.VALUE testVALUE/SET/SET_CUBOID_B.VALUE
+
+
+#java -cp lib dcprototype.DIFF -d testTYPE/SET/SET_NAT.TYPE testVALUE/SET/SET_NAT_A.VALUE testVALUE/SET/SET_NAT_B.VALUE
+
 

@@ -4,7 +4,6 @@ package types;
 import delta.Deletion;
 import delta.Delta;
 import delta.DeltaList;
-import delta.Id;
 import delta.Insertion;
 import delta.Unknown;
 import delta.UnknownRest;

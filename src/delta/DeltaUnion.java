@@ -9,13 +9,11 @@ public class DeltaUnion extends Delta
   private final Delta delta;
   public DeltaUnion(String label, Delta delta){ this.label=label; this.delta=delta;} 
   @Override
-  public String toString()
-  { StringBuilder buf=new StringBuilder();
-    buf.append(this.label); buf.append("."); buf.append(this.delta);
-    return buf.toString();
-  }    
+  public String toString(){ return this.label+"."+this.delta.toString();}    
   @Override
   public double weight(){ return this.delta.weight();}
+  public double increase(){ return this.delta.increase();}
+  public double decrease(){ return this.delta.decrease();}
  
   @Override
   public Sim sim(){ return this.delta.sim();}

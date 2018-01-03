@@ -1,13 +1,8 @@
 
 package utility;
 
-import delta.Deletion;
-import delta.DeltaRec;
-import delta.Insertion;
 import delta.Unknown;
-import delta.UnknownRest;
 import solution.CandidatesList;
-import solution.StepList;
 import typeSystem.TYPE;
 import types.TypeT;
 

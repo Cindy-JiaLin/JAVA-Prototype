@@ -11,13 +11,22 @@ public class Change extends Delta
 { private final TypeT orig, targ;
   public Change(TypeT orig, TypeT targ){ this.orig=orig; this.targ=targ;}        
   @Override
-  public String toString()
-  { StringBuilder buf=new StringBuilder();
-    buf.append("Chg.(");buf.append(this.orig); buf.append(","); buf.append(this.targ);buf.append(")");
-    return buf.toString();      
-  }    
+  public String toString(){ return "Chg.("+this.orig.toString()+","+this.targ.toString()+")";}    
   @Override
-  public double weight(){ return this.orig.weight()+this.targ.weight();}        
+  public double weight(){ return this.orig.weight()+this.targ.weight();} 
+  public double increase()
+  { if(orig.typeOf().isREAL()&&targ.typeOf().isREAL()&&orig.typeOf().equals(targ.typeOf()))
+    { TypeReal r1=(TypeReal) orig;
+      TypeReal r2=(TypeReal) targ;
+      double acc=orig.typeOf().getAcc();
+ 
+      if(Math.abs(r1.getValue()-r2.getValue())<acc)
+      { return 2*(1-(Math.abs(r1.getValue()-r2.getValue())/acc));}
+      else return 0.0;
+    }
+    else return 0.0;
+  }
+  public double decrease(){ return (weight()-increase());}
   
   @Override
   public Sim sim()

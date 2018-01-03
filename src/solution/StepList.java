@@ -4,7 +4,6 @@ package solution;
 import delta.Delta;
 import delta.DeltaList;
 import delta.DeltaMultiset;
-import delta.DeltaProduct;
 import delta.DeltaRec;
 import delta.DeltaSet;
 import delta.UnknownRest;
@@ -15,10 +14,19 @@ import similarity.Sim;
 public class StepList
 { private final Delta step;
   private final StepList rest;
+  private final double weight;
+  private final double increment;
+  private final double decrement;
   //Either this.step==null&&this.rest==null (Empty StepList)
   //Or this.step!=null && this.rest!=null
-  public StepList(){ this.step=null; this.rest=null;}//Constructor for empty stepList.
-  public StepList(Delta step, StepList rest){ this.step=step; this.rest=rest;}//Constructor for non-empty stepList.        
+  public StepList(){ this.step=null; this.rest=null; this.weight=0; this.increment=0.0; this.decrement=0;}//Constructor for empty stepList.
+  public StepList(Delta step, StepList rest)
+  { this.step=step; 
+    this.rest=rest;
+    this.weight=this.step.weight()+this.rest.weight();
+    this.increment=this.step.increase()+this.rest.increase();
+    this.decrement=this.step.decrease()+this.rest.decrease();
+  }//Constructor for non-empty stepList.        
   
   public boolean isEmptyStepList(){ return this.step==null&&this.rest==null;}
   
@@ -48,24 +56,19 @@ public class StepList
   public StepList insert(Delta d){ return new StepList(d,this);}
  
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  public double weight(){ return this.weight;}   
+  public double increase(){ return this.increment;}
+  public double decrease(){ return this.decrement;}
   
-  public double weight()
-  { if(!this.isEmptyStepList()) return this.step.weight()+this.rest.weight();
-    else return 0.0;
-  }   
   /*Here should be a parameter whole_weight
    *
   */
   public Sim sim()
-  { if(!this.isEmptyStepList()) 
-    { Sim stepSim=this.step.sim();
-      Sim restSim=this.rest.sim();
-      double stepWeight=this.step.weight();
-      double restWeight=this.rest.weight();
-      double weight=stepWeight+restWeight;
-      double lwb=((stepWeight*stepSim.lwb()+restWeight*restSim.lwb())/weight);
-      double upb=((stepWeight*stepSim.upb()+restWeight*restSim.upb())/weight);
-      // System.out.println("StepList sim=["+lwb+", "+upb+"]");
+  { if(!this.isEmptyStepList()) //non-empty StepList the weight is not 0
+    { double lwb=increase()/weight();
+      double upb=1-decrease()/weight();
+      //System.out.println("weight()="+weight());
+      //System.out.println("["+lwb+","+upb+"]");
       return new Sim(lwb, upb);
     }
     else return new Sim(0.0,0.0);

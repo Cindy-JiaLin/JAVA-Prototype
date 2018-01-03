@@ -12,12 +12,13 @@ public class UnknownRest extends Delta
   
   @Override
   public String toString()
-  { StringBuilder buf=new StringBuilder();
-    buf.append("UnknownRest: "); buf.append(this.orig);buf.append(","); buf.append(this.targ);
-    return buf.toString();
+  { if(this.orig.weight()==0&&this.targ.weight()==0) return "";
+    else return "UnknownRest("+this.orig.toString()+","+this.targ.toString()+")";
   }   
   @Override
-  public double weight(){ return this.orig.weight()+this.targ.weight();}        
+  public double weight(){ return this.orig.weight()+this.targ.weight();}  
+  public double increase(){ return 0.0;}
+  public double decrease(){ return 0.0;}
   
   @Override
   public Sim sim(){ return new Sim(0.0,1.0);} 
