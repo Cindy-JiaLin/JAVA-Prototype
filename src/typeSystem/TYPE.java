@@ -19,6 +19,7 @@ public class TYPE
   private final static String sNAT="NAT";
   private final static String sREAL="REAL";
   private final static String sCHAR="CHAR";
+  private final static String sSTRING="STRING";
   private final static String sPRODUCT="PRODUCT";
   private final static String sUNION="UNION";
   private final static String sLIST ="LIST";
@@ -28,7 +29,7 @@ public class TYPE
   private final static String sVAR="VAR";
   private final static String sREC="REC";
        
-  // PRIMITIVE, UNIT, BOOL, NAT, CHAR
+  // PRIMITIVE, UNIT, BOOL, NAT, CHAR, STRING
   private TYPE(String name)
   { this.name=name; this.varName=null; this.acc=0; this.labelandTYPEs=null; this.T1=null; this.T2=null;}
   // REAL
@@ -54,6 +55,7 @@ public class TYPE
   public final static TYPE BOOL=new TYPE(sBOOL);
   public final static TYPE NAT=new TYPE(sNAT);
   public final static TYPE CHAR=new TYPE(sCHAR);
+  public final static TYPE STRING = new TYPE(sSTRING);
   
   public final static TYPE REAL(double acc){ return new TYPE(sREAL, acc);}
   
@@ -69,25 +71,27 @@ public class TYPE
   public final static TYPE VAR(String varName){ return new TYPE(sVAR, varName);}
   public final static TYPE REC(String varName, TYPE TypeBody){ return new TYPE(sREC, varName, TypeBody);}
   
-  public boolean isUNIT(){ return (this.name == null ? sUNIT == null : this.name.equals(sUNIT));}
-  public boolean isBOOL(){ return (this.name == null ? sBOOL == null : this.name.equals(sBOOL));}
-  public boolean isNAT(){ return (this.name == null ? sNAT == null : this.name.equals(sNAT));}
-  public boolean isREAL(){ return (this.name == null ? sREAL == null : this.name.equals(sREAL));}
-  public boolean isCHAR(){ return (this.name == null ? sCHAR == null : this.name.equals(sCHAR));}
-  public boolean isPRIMITIVE(){ return (this.name == null ? sUNIT == null : this.name.equals(sUNIT))
-                                     ||(this.name == null ? sBOOL == null : this.name.equals(sBOOL))
-                                     ||(this.name == null ? sNAT == null : this.name.equals(sNAT))
-                                     ||(this.name == null ? sCHAR == null : this.name.equals(sCHAR));}
+  public boolean isUNIT(){ return this.name.equals(sUNIT);}
+  public boolean isBOOL(){ return this.name.equals(sBOOL);}
+  public boolean isNAT(){ return this.name.equals(sNAT);}
+  public boolean isREAL(){ return this.name.equals(sREAL);}
+  public boolean isCHAR(){ return this.name.equals(sCHAR);}
+  public boolean isSTRING(){ return this.name.equals(sSTRING);}
+  public boolean isPRIMITIVE(){ return this.name.equals(sUNIT)
+                                     ||this.name.equals(sBOOL)
+                                     ||this.name.equals(sNAT)
+                                     ||this.name.equals(sCHAR)
+                                     ||this.name.equals(sSTRING);}
   
-  public boolean isPRODUCT(){ return (this.name == null ? sPRODUCT == null : this.name.equals(sPRODUCT));}
-  public boolean isUNION(){ return (this.name == null ? sUNION == null : this.name.equals(sUNION));}
-  public boolean isSET(){ return (this.name == null ? sSET == null : this.name.equals(sSET));}
-  public boolean isMSET(){ return (this.name == null ? sMSET == null : this.name.equals(sMSET));}
-  public boolean isLIST(){ return (this.name == null ? sLIST == null : this.name.equals(sLIST));}
-  public boolean isMAPPING(){ return (this.name == null ? sMAPPING == null : this.name.equals(sMAPPING));}
+  public boolean isPRODUCT(){ return this.name.equals(sPRODUCT);}
+  public boolean isUNION(){ return this.name.equals(sUNION);}
+  public boolean isSET(){ return this.name.equals(sSET);}
+  public boolean isMSET(){ return this.name.equals(sMSET);}
+  public boolean isLIST(){ return this.name.equals(sLIST);}
+  public boolean isMAPPING(){ return this.name.equals(sMAPPING);}
   
-  public boolean isREC(){ return (this.name == null ? sREC == null : this.name.equals(sREC));}
-  public boolean isVAR(){ return (this.name == null ? sVAR == null : this.name.equals(sVAR));}
+  public boolean isREC(){ return this.name.equals(sREC);}
+  public boolean isVAR(){ return this.name.equals(sVAR);}
                   
   
   public double getAcc()
@@ -157,7 +161,7 @@ public class TYPE
   public boolean equals(Object obj)
   { if (obj instanceof TYPE)
     { TYPE that=(TYPE)obj;
-      if(this.isPRIMITIVE()&&that.isPRIMITIVE()){ return (this.name == null ? that.name == null : this.name.equals(that.name));}
+      if(this.isPRIMITIVE()&&that.isPRIMITIVE()){ return this.name.equals(that.name);}
       else if(this.isREAL()&&that.isREAL()){ return this.acc==that.acc;}
       //For Structured TYPEs, if they are the same TYPE, the name of them should be equals to each other.
       else if(this.isPRODUCT()&&that.isPRODUCT()){ return this.labelandTYPEs.equals(that.labelandTYPEs);}
@@ -166,10 +170,10 @@ public class TYPE
       else if(this.isSET()&&that.isSET()){ return this.T1.equals(that.T1);}
       else if(this.isMSET()&&that.isMSET()){ return this.T1.equals(that.T1);}
       else if(this.isLIST()&&that.isLIST()){ return this.T1.equals(that.T1);}
-      else if(this.isVAR()&&that.isVAR()){ return (this.varName == null ? that.varName == null : this.varName.equals(that.varName));}
+      else if(this.isVAR()&&that.isVAR()){ return this.varName.equals(that.varName);}
       else if(this.isREC()||that.isREC())
       { if(this.isREC()&&that.isREC())
-        { if(this.varName == null ? that.varName == null : this.varName.equals(that.varName)){ return this.T1.equals(that.T1);}  
+        { if(this.varName.equals(that.varName)){ return this.T1.equals(that.T1);}  
           //if the varNames are different, unify varNames with this.varName, e.g. REC(x:Tx) REC(y:Ty) maybe the same REC TYPE.
           else{ return this.equals(that.unifyVarName(that.varName, this.varName));} 
         }

@@ -1,0 +1,3 @@
+java -Xss100M -cp lib dcprototype.DIFF -d testTYPE/GRAPH/GRAPH.TYPE testVALUE/GRAPH/GRAPH_A.VALUE testVALUE/GRAPH/GRAPH_B.VALUE
+
+

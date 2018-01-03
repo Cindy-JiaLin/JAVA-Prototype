@@ -1,0 +1,1 @@
+SET(PRODUCT(node.STRING*link.SET(PRODUCT(distance.REAL(0.5)*node.STRING))))

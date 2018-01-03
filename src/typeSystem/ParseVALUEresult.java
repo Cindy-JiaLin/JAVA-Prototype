@@ -3,6 +3,7 @@ package typeSystem;
 
 import types.TypeBool;
 import types.TypeChar;
+import types.TypeString;
 import types.TypeList;
 import types.TypeMapping;
 import types.TypeMultiset;
@@ -62,7 +63,7 @@ public class ParseVALUEresult
   }
  
   private static double getDouble(String str)
-  { StringBuffer buf = new StringBuffer();
+  { StringBuilder buf = new StringBuilder();
     char c;
     for (int i = 0; i < str.length() ; i++) 
     { c = str.charAt(i);
@@ -95,6 +96,17 @@ public class ParseVALUEresult
       str=cutoff(str, c);
       return ok(new TypeChar(T,c.charAt(0)), str);
     } 
+    else if(T.isSTRING())
+    {   if(!str.startsWith("'")){ return error(str, "Expected a STRING TYPE value.");}
+      str=cutoff(str,"'");
+      int dotIndex=str.indexOf("'");// Find the position of the ' symbol at the end of the string value
+        if(dotIndex==-1)throw new RuntimeException("Has no ''' in this str.");
+      String content=str.substring(0, dotIndex).trim();
+      str=cutoff(str,content);
+        if(!str.startsWith("'")) { return error(str, "Expected a ' at the end of string value");}
+      str=cutoff(str,"'");
+        return ok(new TypeString(T, content), str);
+    }    
     else if(T.isPRODUCT())
     {   if(!str.startsWith("(")){ return error(str, "Expected a '(' at the beginning of a PRODUCT TYPE value.");}
       str=cutoff(str,"(");

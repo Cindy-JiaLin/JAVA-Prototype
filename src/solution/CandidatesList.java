@@ -53,16 +53,16 @@ public class CandidatesList
     { //If the comparison is not completed, the fstDelta is a partial solution.
       //System.out.println(this.fstDelta+"sim="+this.fstDelta.sim());
       if(!this.fstDelta.sim().isComplete())
-      { //CandidatesList extends=this.fstDelta.refine();
-        //CandidatesList inserts=this.restCands.insert_cands(extends);
-        //CandidatesList again=inserts.solutions();  
-        return this.restCands.insert_cands(this.fstDelta.refine()).solutions();
+      { CandidatesList expandsFirstDelta = this.fstDelta.refine();
+        CandidatesList insertsNewCands = this.restCands.insert_cands(expandsFirstDelta);
+        CandidatesList searchAgain = insertsNewCands.solutions();  
+        return searchAgain;
         //Here, whatever, the restCands is empty or not, by inserting the extends to the restCands makes sure the returned
         //CandidatesList is sorted.
       }
       else//If the first solution shows they are already completely compared, the fstDelta will be the final solution.
       { //However, if the restCands still not empty, the restCands.solutions() is used to research all other solution candidates.
-        if(!this.restCands.isEmptyCandidatesList()){ return new CandidatesList(this.fstDelta, this.restCands.solutions());}
+        if(!this.restCands.isEmptyCandidatesList()){ return this.restCands.solutions().insert_cand(this.fstDelta);}
         else{ return new CandidatesList(this.fstDelta, new CandidatesList());}  
       } 
     }

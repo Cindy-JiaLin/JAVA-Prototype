@@ -55,8 +55,10 @@ public class TypeSet extends TypeT
   public TypeSet append(TypeT a)
   { if(!a.typeOf().equals(this.baseType))
     { throw new RuntimeException("The a.typeOf()="+a.typeOf()+" is different from"+this.baseType+" cannot be appended.");}
-    else if(this.hasEle(a)) return this;
-    else if(!this.isEmptySet()){ return new TypeSet(this.baseType, this.head, this.rest.append(a));}
+    else if(!this.isEmptySet())
+    { if(this.hasEle(a)) return this;
+      else return new TypeSet(this.baseType, this.head, this.rest.append(a));
+    }
     else { return new TypeSet(this.baseType, a, new TypeSet(this.baseType));}
   }          
   @Override

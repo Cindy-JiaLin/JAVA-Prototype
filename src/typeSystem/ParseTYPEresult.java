@@ -103,7 +103,9 @@ public class ParseTYPEresult
     else if(str.startsWith("NAT"))
     { return ok(TYPE.NAT, cutoff(str, "NAT"));} 
     else if(str.startsWith("CHAR"))
-    { return ok(TYPE.CHAR, cutoff(str, "CHAR"));} 
+    { return ok(TYPE.CHAR, cutoff(str, "CHAR"));}
+     else if(str.startsWith("STRING"))
+    { return ok(TYPE.STRING, cutoff(str, "STRING"));} 
     else if(str.startsWith("REAL"))
     { str=cutoff(str, "REAL");
         if(!str.startsWith("(")) return error(str, "Expected a '(' after REAL.");

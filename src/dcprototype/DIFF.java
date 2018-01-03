@@ -13,6 +13,7 @@ import types.TypeT;
 import delta.Delta;
 import types.TypeBool;
 import types.TypeChar;
+import types.TypeString;
 import types.TypeList;
 import types.TypeMapping;
 import types.TypeMultiset;
@@ -149,7 +150,11 @@ public class DIFF {
       else if(T.isCHAR() && t.typeOf().isCHAR())
       { TypeChar v = (TypeChar)t;
         return new TypeChar(T, v.getValue());
-      }  
+      } 
+      else if(T.isSTRING() && t.typeOf().isSTRING())
+      { TypeString v = (TypeString)t;
+        return new TypeString(T, v.getValue());
+      }    
       // model structured types one by one
       else if(T.isPRODUCT() && t.typeOf().isPRODUCT() && T.equals(t.typeOf()))
       { TypeProduct v =(TypeProduct)t;
