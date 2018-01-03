@@ -5,4 +5,4 @@ TypeT 1:
 TypeT 2:
 (fst.left.2,snd.6,trd.unit)
 Delta :
-DeltaProduct:(right-to-left.Chg.(right.m,left.2), Chg.(5,6), cpy.unit)
+DeltaProduct:(fst.dismatch: (right-to-left).Chg.(right.m,left.2), snd.Chg.(5,6), trd.cpy.unit)

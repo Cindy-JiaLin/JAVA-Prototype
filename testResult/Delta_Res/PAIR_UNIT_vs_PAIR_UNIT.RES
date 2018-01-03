@@ -5,4 +5,4 @@ TypeT 1:
 TypeT 2:
 (fst.unit,snd.unit)
 Delta :
-DeltaProduct:(cpy.unit, cpy.unit)
+DeltaProduct:(fst.cpy.unit, snd.cpy.unit)

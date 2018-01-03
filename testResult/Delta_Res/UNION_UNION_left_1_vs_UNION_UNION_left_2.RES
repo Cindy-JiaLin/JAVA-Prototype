@@ -5,4 +5,4 @@ left.other.3
 TypeT 2:
 left.none.unit
 Delta :
-left.other-to-none.Chg.(other.3,none.unit)
+left.dismatch: (other-to-none).Chg.(other.3,none.unit)

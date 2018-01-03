@@ -5,4 +5,4 @@ TypeT 1:
 TypeT 2:
 (fst.5,snd.f)
 Delta :
-DeltaProduct:(cpy.5, Chg.(e,f))
+DeltaProduct:(fst.cpy.5, snd.Chg.(e,f))

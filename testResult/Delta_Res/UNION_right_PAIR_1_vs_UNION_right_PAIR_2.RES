@@ -5,4 +5,4 @@ right.(fst.e,snd.true)
 TypeT 2:
 right.(fst.e,snd.false)
 Delta :
-right.DeltaProduct:(cpy.e, Chg.(true,false))
+right.DeltaProduct:(fst.cpy.e, snd.Chg.(true,false))

@@ -5,4 +5,4 @@ left.other.3
 TypeT 2:
 right.cons.(car.a,cdr.cons.(car.b,cdr.cons.(car.c,cdr.nil.unit)))
 Delta :
-left-to-right.Chg.(left.other.3,right.cons.(car.a,cdr.cons.(car.b,cdr.cons.(car.c,cdr.nil.unit))))
+dismatch: (left-to-right).Chg.(left.other.3,right.cons.(car.a,cdr.cons.(car.b,cdr.cons.(car.c,cdr.nil.unit))))
