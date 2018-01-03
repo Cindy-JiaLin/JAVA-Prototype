@@ -11,39 +11,34 @@ package utility;
     public ListOfVars(String head, ListOfVars rest){ this.head=head; this.rest=rest;}// constructor for non-empty ListOfVars
   
     public String head()
-    { if(!this.isEmptyListOfStrings()){return this.head;}
-      else if(this.isEmptyListOfStrings()){ throw new RuntimeException("There is no head element in an empty ListOfStrings.");} 
-      else { throw new RuntimeException("Illegal constructor usage in ListOfStrings head() method.");}
+    { if(!this.isEmptyListOfStrings()) return this.head;
+      else throw new RuntimeException("There is no head element in an empty ListOfStrings."); 
     }
     public ListOfVars rest()
-    { if(!this.isEmptyListOfStrings()){return this.rest;}
-      else if(this.isEmptyListOfStrings()){ return new ListOfVars();}
-      else{ throw new RuntimeException("Illegal constructor usage in ListOfStrings rest() method.");}
+    { if(!this.isEmptyListOfStrings()) return this.rest;
+      else return new ListOfVars();
     }
     public boolean isEmptyListOfStrings(){ return this.head==null&&this.rest==null;}
     
     public int size()
-    { if(!this.isEmptyListOfStrings()){ return 1+this.rest.size();}
-      else if(this.isEmptyListOfStrings()){ return 0;}
-      else { throw new RuntimeException("Illegal constructor usage in ListOfStrings size() method.");}
+    { if(!this.isEmptyListOfStrings()) return 1+this.rest.size();
+      else return 0;
     }        
     public boolean hasStr(String newStr)
     { if(!this.isEmptyListOfStrings())
-      { if(newStr.equals(this.head)){ return true;}
-        else{ return this.rest.hasStr(newStr);}  
+      { if(newStr.equals(this.head)) return true;
+        else return this.rest.hasStr(newStr);  
       }
-      else if(this.isEmptyListOfStrings()){ return false;}
-      else { throw new RuntimeException("Illegal constructor usage in ListOfStrings hasStr() method.");}
+      else return false;
     }        
   
     public ListOfVars ins(String newStr){ return new ListOfVars(newStr, this);} 
     public ListOfVars append(String newStr)
     { if(!this.isEmptyListOfStrings())
-      { if(!this.head.equals(newStr)){ return new ListOfVars(this.head, this.rest.append(newStr));} 
-        else{ return this;}
+      { if(!this.head.equals(newStr)) return new ListOfVars(this.head, this.rest.append(newStr)); 
+        else return this;
       }
-      else if(this.isEmptyListOfStrings()){ return new ListOfVars(newStr, this);}
-      else { throw new RuntimeException("Illegal constructor usage in ListOfStrings append() method.");}
+      else return new ListOfVars(newStr, this);
     }
 
     @Override

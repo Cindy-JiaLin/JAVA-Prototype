@@ -27,9 +27,8 @@ public class StepList
     else{ throw new RuntimeException("Empty stepList has no head element.");}
   }       
   public StepList rest()
-  { if(!this.isEmptyStepList()){ return this.rest;}
-    else if(this.isEmptyStepList()) { return new StepList();}//or return this
-    else{ throw new RuntimeException("Illegal constructor usage in StepList rest() method.");}
+  { if(!this.isEmptyStepList()) return this.rest;
+    else return new StepList();
   }        
   
   @Override
@@ -51,21 +50,25 @@ public class StepList
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   public double weight()
-  { if(!this.isEmptyStepList()){ return this.step.weight()+this.rest.weight();}
-    else if(this.isEmptyStepList()){ return 0.0;}
-    else { throw new RuntimeException("Illegal constructor usage in StepList weight() method.");}
+  { if(!this.isEmptyStepList()) return this.step.weight()+this.rest.weight();
+    else return 0.0;
   }   
   /*Here should be a parameter whole_weight
    *
   */
   public Sim sim()
   { if(!this.isEmptyStepList()) 
-    { double lwb=((this.step.weight()*(this.step.sim().lwb())+this.rest.weight()*(this.rest.sim().lwb()))/(this.weight()));
-      double upb=((this.step.weight()*(this.step.sim().upb())+this.rest.weight()*(this.rest.sim().upb()))/(this.weight()));
+    { Sim stepSim=this.step.sim();
+      Sim restSim=this.rest.sim();
+      double stepWeight=this.step.weight();
+      double restWeight=this.rest.weight();
+      double weight=stepWeight+restWeight;
+      double lwb=((stepWeight*stepSim.lwb()+restWeight*restSim.lwb())/weight);
+      double upb=((stepWeight*stepSim.upb()+restWeight*restSim.upb())/weight);
+      // System.out.println("StepList sim=["+lwb+", "+upb+"]");
       return new Sim(lwb, upb);
     }
-    else if(this.isEmptyStepList()){ return new Sim(0.0,0.0);}
-    else { throw new RuntimeException("Illegal constructor usage in StepList sim() method.");}
+    else return new Sim(0.0,0.0);
   }        
   
   //A stepList is the constructor of DeltaList, DeltaSet, DeltaMultiset and DeltaMapping
@@ -103,8 +106,7 @@ public class StepList
       //            +----restStepList3
       else{ return extend_StepList(this.step, this.rest.refine_StepList());}
     }
-    else if(this.isEmptyStepList()){ return new ListOfStepList();}  
-    else{ throw new RuntimeException("Illegal constructor usage in StepList refine_StepList() method.");}
+    else return new ListOfStepList();  
   }
   //        +----stepList1
   //        |               return

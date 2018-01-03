@@ -11,14 +11,12 @@ public class ListOfDeltas
   public ListOfDeltas(Delta head, ListOfDeltas rest){ this.head=head; this.rest=rest;}//Constructor for non-empty ListOfDeltas.        
   
   public Delta head()
-  { if(!this.isEmptyListOfDeltas()){ return this.head;}
-    else if(this.isEmptyListOfDeltas()){ throw new RuntimeException("Empty stepList has no head element.");}
-    else { throw new RuntimeException("Illegal constructor usage in ListOfDeltas head() method.");}
+  { if(!this.isEmptyListOfDeltas()) return this.head;
+    else throw new RuntimeException("Empty stepList has no head element.");
   }       
   public ListOfDeltas rest()
-  { if(!this.isEmptyListOfDeltas()){ return this.rest;}
-    else if(this.isEmptyListOfDeltas()) { return new ListOfDeltas();}
-    else{ throw new RuntimeException("Illegal constructor usage in ListOfDeltas rest() method.");}
+  { if(!this.isEmptyListOfDeltas()) return this.rest;
+    else return new ListOfDeltas();
   }        
   public boolean isEmptyListOfDeltas(){ return this.head==null&&this.rest==null;}
   
@@ -33,9 +31,8 @@ public class ListOfDeltas
     if (!rest.isEmptyListOfDeltas()){ buf.append(", "); this.rest.dump(buf);}
   }  
   public double weight()
-  { if(!this.isEmptyListOfDeltas()){ return this.head.weight()+this.rest.weight();}
-    else if(this.isEmptyListOfDeltas()){ return 0.0;}
-    else { throw new RuntimeException("Illegal constructor usage in ListOfDeltas weight() method.");}
+  { if(!this.isEmptyListOfDeltas()) return this.head.weight()+this.rest.weight();
+    else return 0.0;
   }   
  
   public Sim sim()
@@ -45,8 +42,7 @@ public class ListOfDeltas
       double upb=(this.head.weight()*this.head.sim().upb()+this.rest.weight()*this.rest.sim().upb())/whole_weight;
       return new Sim(lwb,upb);
     }
-    else if(this.isEmptyListOfDeltas()){ return new Sim(0.0,0.0);}
-    else { throw new RuntimeException("Illegal constructor usage in ListOfDeltas sim() method.");}
+    else return new Sim(0.0,0.0);
   }        
   //insert a Delta in front of this list of delta      
   public ListOfDeltas insert(Delta d){ return new ListOfDeltas(d,this);}
@@ -58,8 +54,7 @@ public class ListOfDeltas
   }        
   
   public ListOfDeltas refine()
-  { if(!this.isEmptyListOfDeltas()){return new ListOfDeltas(this.head.refine().solutions().fstDelta(), this.rest.refine());}
-    else if(this.isEmptyListOfDeltas()){ return new ListOfDeltas();}
-    else { throw new RuntimeException("Illegal constructor usage in ListOfDeltas refine() method.");}
+  { if(!this.isEmptyListOfDeltas()) return new ListOfDeltas(this.head.refine().solutions().fstDelta(), this.rest.refine());
+    else return new ListOfDeltas();
   }        
 }

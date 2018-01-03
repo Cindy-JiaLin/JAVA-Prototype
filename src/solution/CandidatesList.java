@@ -25,14 +25,12 @@ public class CandidatesList
     if (!this.restCands.isEmptyCandidatesList()){ buf.append(", \n"); this.restCands.dump(buf);}
   }       
   public Delta fstDelta()
-  { if(!this.isEmptyCandidatesList()){return this.fstDelta;}  
-    else if(this.isEmptyCandidatesList()){ throw new RuntimeException("Empty CandidatesList has no head.");}
-    else{ throw new RuntimeException("Illegal Constructor Usage in CandidatesList fstDelta() method.");}
+  { if(!this.isEmptyCandidatesList()) return this.fstDelta;
+    else throw new RuntimeException("Empty CandidatesList has no head.");
   }      
   public CandidatesList restCands()
-  { if(!this.isEmptyCandidatesList()){return this.restCands;}  
-    else if(this.isEmptyCandidatesList()){ return new CandidatesList();}
-    else{ throw new RuntimeException("Illegal Constructor Usage in CandidatesList restCands() method.");}
+  { if(!this.isEmptyCandidatesList()) return this.restCands;  
+    else return new CandidatesList();
   }
   
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,18 +65,15 @@ public class CandidatesList
         else{ return new CandidatesList(this.fstDelta, new CandidatesList());}  
       } 
     }
-    else if(this.isEmptyCandidatesList()){ throw new RuntimeException("This CandidatesList should never be empty.");}
-    else{ throw new RuntimeException("Illegal Constructor Usage in CandidatesList solutions() method.");}
+    else throw new RuntimeException("This CandidatesList should never be empty.");
   }
   
       
   //Insert the newCands to a sorted curCands=this
   //this candidatesList must have been sorted.
   public CandidatesList insert_cands(CandidatesList newCands)
-  { if(!newCands.isEmptyCandidatesList())
-    { return this.insert_cand(newCands.fstDelta).insert_cands(newCands.restCands);}
-    else if(newCands.isEmptyCandidatesList()){ return this;}
-    else{ throw new RuntimeException("Illegal Constructor Usage in CandidatesList insert_cands() method.");}
+  { if(!newCands.isEmptyCandidatesList()) return this.insert_cand(newCands.fstDelta).insert_cands(newCands.restCands);
+    else return this;
   }  
   // Insert a cand to a sorted CandidatesList
   public CandidatesList insert_cand(Delta newCand)
@@ -104,7 +99,6 @@ public class CandidatesList
       //Otherwise, curSim.lwb<newSim.lwb, the newCand will be the first one in the cands list.
       else{ return new CandidatesList(newCand, this);}
     }
-    else if(this.isEmptyCandidatesList()){ return new CandidatesList(newCand,new CandidatesList());}
-    else{ throw new RuntimeException("Illegal Constructor Usage in CandidatesList insert_cand() method.");}
+    else return new CandidatesList(newCand,new CandidatesList());
   }
 }

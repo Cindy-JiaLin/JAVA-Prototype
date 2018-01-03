@@ -34,9 +34,8 @@ public class TypeSet extends TypeT
     else{ throw new RuntimeException("This is an empty set, no head to be returned.");}
   }
   public TypeSet getRest()
-  { if(!this.isEmptySet()){ return this.rest;}
-    else if(this.isEmptySet()){ return EMPTY_SET(this.baseType);}  
-    else { throw new RuntimeException("Illegal constructor usage in TypeSet getRest() method.");}
+  { if(!this.isEmptySet()) return this.rest;
+    else return EMPTY_SET(this.baseType);  
   }
   
   private boolean hasEle(TypeT a)
@@ -58,8 +57,7 @@ public class TypeSet extends TypeT
     { throw new RuntimeException("The a.typeOf()="+a.typeOf()+" is different from"+this.baseType+" cannot be appended.");}
     else if(this.hasEle(a)) return this;
     else if(!this.isEmptySet()){ return new TypeSet(this.baseType, this.head, this.rest.append(a));}
-    else if(this.isEmptySet()){ return new TypeSet(this.baseType, a, new TypeSet(this.baseType));}
-    else { throw new RuntimeException("Illegal constructor usage in TypeSet append() method.");}
+    else { return new TypeSet(this.baseType, a, new TypeSet(this.baseType));}
   }          
   @Override
   public boolean equals(Object obj)
@@ -89,9 +87,8 @@ public class TypeSet extends TypeT
    
   @Override
   public double weight()
-  { if(!this.isEmptySet()){ return this.head.weight()+this.rest.weight();}  
-    else if(this.isEmptySet()){ return 0.0;}
-    else { throw new RuntimeException("Illegal constructor usage in TypeSet weight() method.");}
+  { if(!this.isEmptySet()) return this.head.weight()+this.rest.weight();  
+    else return 0.0;
   }
   
   //This oneToMore method is used to pair every element in "this" TypeSet to t

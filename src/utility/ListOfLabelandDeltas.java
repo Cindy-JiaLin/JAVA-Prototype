@@ -13,14 +13,12 @@ public class ListOfLabelandDeltas
   public boolean isEmptyListOfLabelandDeltas(){ return this.head==null&&this.rest==null;}
   
   public LabelandDelta head()
-  { if(!this.isEmptyListOfLabelandDeltas()){ return this.head;}
-    else if(this.isEmptyListOfLabelandDeltas()){ throw new RuntimeException("Empty ListOfLabelandDeltas has no head element.");}
-    else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandDeltas head() method.");}
+  { if(!this.isEmptyListOfLabelandDeltas()) return this.head;
+    else throw new RuntimeException("Empty ListOfLabelandDeltas has no head element.");
   }       
   public ListOfLabelandDeltas rest()
-  { if(!this.isEmptyListOfLabelandDeltas()){ return this.rest;}
-    else if(this.isEmptyListOfLabelandDeltas()) { return new ListOfLabelandDeltas();}
-    else{ throw new RuntimeException("Illegal constructor usage in ListOfLabelandDeltas rest() method.");}
+  { if(!this.isEmptyListOfLabelandDeltas()) return this.rest;
+    else return new ListOfLabelandDeltas();
   }        
   
   
@@ -35,19 +33,22 @@ public class ListOfLabelandDeltas
     if (!rest.isEmptyListOfLabelandDeltas()){ buf.append(", "); this.rest.dump(buf);}
   }  
   public double weight()
-  { if(!this.isEmptyListOfLabelandDeltas()){ return this.head.getDelta().weight()+this.rest.weight();}
-    else if(this.isEmptyListOfLabelandDeltas()){ return 0.0;}
-    else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandDeltas weight() method.");}
+  { if(!this.isEmptyListOfLabelandDeltas()) return this.head.getDelta().weight()+this.rest.weight();
+    else return 0.0;
   }   
  
   public Sim sim()
   { if(!this.isEmptyListOfLabelandDeltas()) 
-    { double lwb=(this.head.getDelta().weight()*this.head.getDelta().sim().lwb()+this.rest.weight()*this.rest.sim().lwb())/this.weight();
-      double upb=(this.head.getDelta().weight()*this.head.getDelta().sim().upb()+this.rest.weight()*this.rest.sim().upb())/this.weight();
+    { double headWeight=this.head.getDelta().weight();
+      double restWeight=this.rest.weight();
+      double weight=headWeight+restWeight;
+      Sim headSim=this.head.getDelta().sim();
+      Sim restSim=this.rest.sim();
+      double lwb=(headWeight*headSim.lwb()+restWeight*restSim.lwb())/weight;
+      double upb=(headWeight*headSim.upb()+restWeight*restSim.upb())/weight;
       return new Sim(lwb,upb);
     }
-    else if(this.isEmptyListOfLabelandDeltas()){ return new Sim(0.0,0.0);}
-    else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandDeltas sim() method.");}
+    else return new Sim(0.0,0.0);
   }        
   //insert a LabelandDelta in front of this ListOfLabelandDelta      
   public ListOfLabelandDeltas insert(LabelandDelta d){ return new ListOfLabelandDeltas(d,this);}
@@ -60,8 +61,7 @@ public class ListOfLabelandDeltas
   
   public ListOfLabelandDeltas refine()
   { if(!this.isEmptyListOfLabelandDeltas()){return new ListOfLabelandDeltas(new LabelandDelta(this.head.getLabel(),this.head.getDelta().refine().solutions().fstDelta()), this.rest.refine());}
-    else if(this.isEmptyListOfLabelandDeltas()){ return new ListOfLabelandDeltas();}
-    else { throw new RuntimeException("Illegal constructor usage in ListOfDeltas refine() method.");}
+    else return new ListOfLabelandDeltas();
   }        
     
 }

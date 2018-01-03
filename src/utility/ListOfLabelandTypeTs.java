@@ -18,37 +18,32 @@ public class ListOfLabelandTypeTs extends TypeT
   public ListOfLabelandTypeTs(LabelandTypeT head, ListOfLabelandTypeTs rest){ this.head=head; this.rest=rest;}// constructor for non-empty ListOfLabelandTypeTs
   
   public LabelandTypeT head()
-  { if(!this.isEmptyListOfLabelandTypeTs()){return this.head;}
-    else if(this.isEmptyListOfLabelandTypeTs()){ throw new RuntimeException("There is no head element in an empty ListOfLabelandTypeTs.");} 
-    else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandTypeTs head() method.");}
+  { if(!this.isEmptyListOfLabelandTypeTs()) return this.head;
+    else throw new RuntimeException("There is no head element in an empty ListOfLabelandTypeTs."); 
   }
   public ListOfLabelandTypeTs rest()
-  { if(!this.isEmptyListOfLabelandTypeTs()){return this.rest;}
-    else if(this.isEmptyListOfLabelandTypeTs()){ return new ListOfLabelandTypeTs();}
-    else{ throw new RuntimeException("Illegal constructor usage in ListOfLabelandTypeTs rest() method.");}
+  { if(!this.isEmptyListOfLabelandTypeTs()) return this.rest;
+    else return new ListOfLabelandTypeTs();
   }
   public boolean isEmptyListOfLabelandTypeTs(){ return this.head==null&&this.rest==null;}
     
  public int size()
- { if(!this.isEmptyListOfLabelandTypeTs()){ return 1+this.rest.size();}
-   else if(this.isEmptyListOfLabelandTypeTs()){ return 0;}
-   else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandTypeTs size() method.");}
+ { if(!this.isEmptyListOfLabelandTypeTs()) return 1+this.rest.size();
+   else return 0;
  }        
  public boolean hasLabelandTypeT(LabelandTypeT newLabelandTypeT)
  { if(!this.isEmptyListOfLabelandTypeTs())
    { if(newLabelandTypeT.equals(this.head)){ return true;}
      else{ return this.rest.hasLabelandTypeT(newLabelandTypeT);}  
    }
-   else if(this.isEmptyListOfLabelandTypeTs()){ return false;}
-   else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandTypeTs hasLabelandTypeT() method.");}
+   else return false;
  }        
   
  public ListOfLabelandTypeTs ins(LabelandTypeT newLabelandTypeT){ return new ListOfLabelandTypeTs(newLabelandTypeT, this);} 
  public ListOfLabelandTypeTs append(LabelandTypeT newLabelandTypeT)
  { if(!this.isEmptyListOfLabelandTypeTs())
    { return new ListOfLabelandTypeTs(this.head, this.rest.append(newLabelandTypeT));} 
-   else if(this.isEmptyListOfLabelandTypeTs()){ return new ListOfLabelandTypeTs(newLabelandTypeT, this);}
-   else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandTypeTs append() method.");}
+   else return new ListOfLabelandTypeTs(newLabelandTypeT, this);
  }
 
  @Override
@@ -74,9 +69,8 @@ public class ListOfLabelandTypeTs extends TypeT
 
 //@Override
  public double weight()
- { if(!this.isEmptyListOfLabelandTypeTs()){ return this.head.getTypeT().weight()+this.rest.weight();}
-   else if(this.isEmptyListOfLabelandTypeTs()){ return 0.0;}
-   else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandTypeTs weigth() method.");}
+ { if(!this.isEmptyListOfLabelandTypeTs()) return this.head.getTypeT().weight()+this.rest.weight();
+   else return 0.0;
  }   
  
  //When compare two values of a specific PRODUCT TYPE, in the this.refine(that) method
@@ -86,8 +80,7 @@ public class ListOfLabelandTypeTs extends TypeT
  { if(this.size()!=that.size()){ throw new RuntimeException("Two product types, the size of them must be the same.");}
    else if(!this.isEmptyListOfLabelandTypeTs()&&!that.isEmptyListOfLabelandTypeTs())
    { return new ListOfLabelandDeltas(new LabelandDelta(this.head.getLabel(), new Unknown(this.head.getTypeT(), that.head.getTypeT())), this.rest.getUnknownDeltas(that.rest));}
-   else if(this.isEmptyListOfLabelandTypeTs()&&that.isEmptyListOfLabelandTypeTs()){ return new ListOfLabelandDeltas();}
-   else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandTypeTs getFinalDeltas() method.");}
+   else return new ListOfLabelandDeltas();
  }                
 
  @Override

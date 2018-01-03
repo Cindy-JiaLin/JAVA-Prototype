@@ -10,14 +10,12 @@ public class ListOfStepList
   public boolean isEmptyListOfStepList(){ return this.head==null&&this.rest==null;}
   
   public StepList head()
-  { if(!this.isEmptyListOfStepList()){ return this.head;}
-    else if(this.isEmptyListOfStepList()){ throw new RuntimeException("Empty list has no head element.");}
-    else { throw new RuntimeException("Illegal constructor usage in ListOfStepList head() method.");}
+  { if(!this.isEmptyListOfStepList()) return this.head;
+    else throw new RuntimeException("Empty list has no head element.");
   }       
   public ListOfStepList rest()
-  { if(!this.isEmptyListOfStepList()){ return this.rest;}
-    else if(this.isEmptyListOfStepList()){ return new ListOfStepList();}
-    else{ throw new RuntimeException("Illegal constructor usage in ListOfStepList rest() method.");}
+  { if(!this.isEmptyListOfStepList()) return this.rest;
+    else return new ListOfStepList();
   }      
   
   @Override

@@ -35,9 +35,8 @@ public class TypeList extends TypeT
     else{ throw new RuntimeException("This is an empty list, no head to be returned.");}
   }
   public TypeList getRest()
-  { if(!this.isEmptyList()){ return this.rest;}
-    else if(this.isEmptyList()){ return EMPTY_LIST(this.baseType);}  
-    else { throw new RuntimeException("Illegal constructor usage in TypeList getRest() method.");}
+  { if(!this.isEmptyList()) return this.rest;
+    else return EMPTY_LIST(this.baseType);
   }
   // insert an element in front of this list
   public TypeList ins(TypeT a)
@@ -50,8 +49,7 @@ public class TypeList extends TypeT
   { if(!a.typeOf().equals(this.baseType))
     { throw new RuntimeException("The a.typeOf()="+a.typeOf()+" is different from"+this.baseType+" cannot be appended.");}
     else if(!this.isEmptyList()){ return new TypeList(this.baseType, this.head, this.rest.append(a));}
-    else if(this.isEmptyList()){ return new TypeList(this.baseType, a, new TypeList(this.baseType));}
-    else { throw new RuntimeException("Illegal constructor usage in TypeList append() method.");}
+    else { return new TypeList(this.baseType, a, new TypeList(this.baseType));}
   }         
   
   @Override
@@ -81,9 +79,8 @@ public class TypeList extends TypeT
   } 
   @Override
   public double weight()
-  { if(!this.isEmptyList()){ return this.head.weight()+this.rest.weight();}  
-    else if(this.isEmptyList()){ return 0.0;}
-    else { throw new RuntimeException("Illegal constructor usage in TypeList weight() method.");}
+  { if(!this.isEmptyList()) return this.head.weight()+this.rest.weight();  
+    else return 0.0;
   }
   
   @Override
@@ -115,11 +112,10 @@ public class TypeList extends TypeT
       //If both lists are empty
       //here used to implement the recursion when (UnknownRest [][]) to empty lists
       //The case of two empty lists are dealt in the Unknown refine method.
-      else if(this.isEmptyList()&&that.isEmptyList())
+      else
       { Delta path=new DeltaList(new StepList());
         return new CandidatesList(path,new CandidatesList());
       }
-      else{ throw new RuntimeException("Illegal constructor usage in TypeList refine() method.");}          
     }
     else{ throw new RuntimeException(obj+" is NOT of TypeList.");}  
   }        

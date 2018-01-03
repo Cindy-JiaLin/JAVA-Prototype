@@ -38,9 +38,8 @@ public class TypeMultiset extends TypeT
     else{ throw new RuntimeException("This is an empty multiset, no head to be returned.");}
   }
   public TypeMultiset getRest()
-  { if(!this.isEmptyMultiset()){ return this.rest;}
-    else if(this.isEmptyMultiset()){ return EMPTY_MSET(this.baseType);}  
-    else { throw new RuntimeException("Illegal constructor usage in TypeMultiset getRest() method.");}
+  { if(!this.isEmptyMultiset()) return this.rest;
+    else return EMPTY_MSET(this.baseType);  
   }
   // add an element in this multiset
   public TypeMultiset put(TypeT a)
@@ -53,8 +52,7 @@ public class TypeMultiset extends TypeT
   { if(!a.typeOf().equals(this.baseType))
     { throw new RuntimeException("The a.typeOf()="+a.typeOf()+" is different from"+this.baseType+" cannot be appended.");}
     else if(!this.isEmptyMultiset()){ return new TypeMultiset(this.baseType, this.head, this.rest.append(a));}
-    else if(this.isEmptyMultiset()){ return new TypeMultiset(this.baseType, a, new TypeMultiset(this.baseType));}
-    else { throw new RuntimeException("Illegal constructor usage in TypeList append() method.");}
+    else { return new TypeMultiset(this.baseType, a, new TypeMultiset(this.baseType));}
   }      
   @Override
   public boolean equals(Object obj)
@@ -82,9 +80,8 @@ public class TypeMultiset extends TypeT
  
   @Override
   public double weight()
-  { if(!this.isEmptyMultiset()){ return this.head.weight()+this.rest.weight();}  
-    else if(this.isEmptyMultiset()){ return 0.0;}
-    else { throw new RuntimeException("Illegal constructor usage in TypeMultiset weight() method.");}
+  { if(!this.isEmptyMultiset()) return this.head.weight()+this.rest.weight();  
+    else return 0.0;
   }
   
   //This oneToMore method is used to pair every element in "this" TypeMultiset to t
