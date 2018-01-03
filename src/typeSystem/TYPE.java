@@ -19,9 +19,6 @@ public class TYPE
   private final static String sNAT="NAT";
   private final static String sREAL="REAL";
   private final static String sCHAR="CHAR";
-
-  private final static String sSTRING="STRING";
-
   private final static String sPRODUCT="PRODUCT";
   private final static String sUNION="UNION";
   private final static String sLIST ="LIST";
@@ -31,7 +28,7 @@ public class TYPE
   private final static String sVAR="VAR";
   private final static String sREC="REC";
        
-  // PRIMITIVE, UNIT, BOOL, NAT, CHAR, STRING
+  // PRIMITIVE, UNIT, BOOL, NAT, CHAR
   private TYPE(String name)
   { this.name=name; this.varName=null; this.acc=0; this.labelandTYPEs=null; this.T1=null; this.T2=null;}
   // REAL
@@ -57,7 +54,6 @@ public class TYPE
   public final static TYPE BOOL=new TYPE(sBOOL);
   public final static TYPE NAT=new TYPE(sNAT);
   public final static TYPE CHAR=new TYPE(sCHAR);
-  public final static TYPE STRING = new TYPE(sSTRING);
   
   public final static TYPE REAL(double acc){ return new TYPE(sREAL, acc);}
   
@@ -78,13 +74,10 @@ public class TYPE
   public boolean isNAT(){ return (this.name == null ? sNAT == null : this.name.equals(sNAT));}
   public boolean isREAL(){ return (this.name == null ? sREAL == null : this.name.equals(sREAL));}
   public boolean isCHAR(){ return (this.name == null ? sCHAR == null : this.name.equals(sCHAR));}
-  public boolean isSTRING(){ return (this.name == null ? sSTRING == null : this.name.equals(sSTRING));}
-
   public boolean isPRIMITIVE(){ return (this.name == null ? sUNIT == null : this.name.equals(sUNIT))
                                      ||(this.name == null ? sBOOL == null : this.name.equals(sBOOL))
                                      ||(this.name == null ? sNAT == null : this.name.equals(sNAT))
-                                     ||(this.name == null ? sCHAR == null : this.name.equals(sCHAR))
-                                     ||(this.name == null ? sSTRING == null : this.name.equals(sSTRING));}
+                                     ||(this.name == null ? sCHAR == null : this.name.equals(sCHAR));}
   
   public boolean isPRODUCT(){ return (this.name == null ? sPRODUCT == null : this.name.equals(sPRODUCT));}
   public boolean isUNION(){ return (this.name == null ? sUNION == null : this.name.equals(sUNION));}

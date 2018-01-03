@@ -1,1 +1,0 @@
-SET(SET(PRODUCT(size.REAL(0.5)*name.CHAR)))

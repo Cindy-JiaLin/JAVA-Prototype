@@ -13,7 +13,6 @@ import types.TypeT;
 import delta.Delta;
 import types.TypeBool;
 import types.TypeChar;
-import types.TypeString;
 import types.TypeList;
 import types.TypeMapping;
 import types.TypeMultiset;
@@ -30,7 +29,10 @@ import utility.FileParser;
 public class DIFF {
 
      public static void main(String[] args) throws IOException 
-     { if(args.length==0||args.length==1)
+     { 
+      final long startTime = System.currentTimeMillis();
+ 
+      if(args.length==0||args.length==1)
       { System.out.print("Thank you to use this program, there are three options:\n");
         System.out.print("(1) Please enter -t path and name of a .TYPE file to present a type.\n");
         System.out.print("(2) Please enter -v path and name of a .TYPE file and a .VALUE file to build a value of this type.\n");
@@ -40,14 +42,13 @@ public class DIFF {
       { if(!args[0].equals("-t")||!args[1].endsWith(".TYPE"))
         { System.out.print("Please enter the correct option '-t .TYPE file' to present a type.");}
         
+        System.out.print("\nFileName: "+args[1]);
         String strTYPE=FileParser.readFileToString(args[1]);//read the file to a String
         ParseTYPEresult resTYPE=ParseTYPEresult.parseTYPE(new ListOfVars(), strTYPE);//parse TYPE
-               
+        System.out.print(" Unfold this type: \n"+TYPE.unfold(resTYPE.getResult())+"\n");
         String fileName="testResult/TYPE_Res/"+cutoff(args[1],".TYPE")+".RES";
         String msg="\nFileName: "+args[1]+"\nparseTYPE: \n"+resTYPE+"\n"+"Unfold this type: \n"+TYPE.unfold(resTYPE.getResult())+"\n";
         writefile(fileName, msg.toString());
-
-        System.out.println(msg);
 
       }
       else if(args.length==3)//testVALUEparser.sh
@@ -57,20 +58,15 @@ public class DIFF {
         String strTYPE=FileParser.readFileToString(args[1]);//read the .TYPE file to a String
         ParseTYPEresult resTYPE=ParseTYPEresult.parseTYPE(new ListOfVars(), strTYPE);//parse TYPE
 
-
         String strVALUE=FileParser.readFileToString(args[2]);//read the .VALUE file to a String
-        //System.out.println("strVALUE="+strVALUE);
         TypeT resV=ParseVALUEresult.parseVALUE(resTYPE.getResult(), strVALUE).getResult();//parse VALUE
-                
-        System.out.println("resV="+resV);
+        System.out.print("\nTypeT: "+resV+"\n");
         
-        //TypeT model = model(resTYPE.getResult(), resV);
 
         String fileName="testResult/VALUE_Res/"+cutoff(args[2],".VALUE")+".RES";
-        //String msg="\nTypeT: "+model+"\n";
-        //writefile(fileName, msg.toString());
+        String msg="\nTypeT: "+resV+"\n";
+        writefile(fileName, msg.toString());
 
-        //System.out.println(msg);
       } 
       else// the args.length==4  present_Sim_Delta.sh
       { if(!args[0].equals("-d")||!args[1].endsWith(".TYPE")||!args[2].endsWith(".VALUE")||!args[3].endsWith(".VALUE"))
@@ -105,8 +101,11 @@ public class DIFF {
         String fileName="testResult/Delta_Res/"+cutoff(args[2],".VALUE")+"_vs_"+cutoff(args[3],".VALUE")+".RES";
         String msg="\nTYPE: "+resTYPE+"\nTypeT 1:\n"+resV1+"\nTypeT 2:\n"+resV2+"\n"+"Delta :\n"+d+"\n";
         writefile(fileName, msg.toString());
-
        } 
+       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       final long endTime   = System.currentTimeMillis();
+       final long totalTime = (endTime - startTime)/1000;
+       System.out.println("duration:"+totalTime+"s");
     }
     //Writing the test result to a text file allows us to re-organise the format of the result
     //See the result, in particular, the delta format more clearly.
@@ -150,11 +149,7 @@ public class DIFF {
       else if(T.isCHAR() && t.typeOf().isCHAR())
       { TypeChar v = (TypeChar)t;
         return new TypeChar(T, v.getValue());
-      } 
-      else if(T.isSTRING() && t.typeOf().isSTRING())
-      { TypeString v = (TypeString)t;
-        return new TypeString(T, v.getValue());
-      } 
+      }  
       // model structured types one by one
       else if(T.isPRODUCT() && t.typeOf().isPRODUCT() && T.equals(t.typeOf()))
       { TypeProduct v =(TypeProduct)t;
@@ -172,9 +167,8 @@ public class DIFF {
         if(v.isEmptyList()) return new TypeList(T.getBaseTYPE());
         else{ return new TypeList(T.getBaseTYPE(), v.getFst(), v.getRest());}
       }    
-      else if(T.isSET() && t.typeOf().isSET()&&T.getBaseTYPE().equals(t.typeOf().getBaseTYPE()))
-      { System.out.println("T="+T);
-        TypeSet v = (TypeSet) t;
+      else if(T.isSET() && t.typeOf().isSET() && T.getBaseTYPE().equals(t.typeOf().getBaseTYPE()))
+      { TypeSet v = (TypeSet) t;
         if(v.isEmptySet()) return new TypeSet(T.getBaseTYPE());
         else{ return new TypeSet(T.getBaseTYPE(), v.getFst(), v.getRest());}
       }    

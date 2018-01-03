@@ -38,8 +38,7 @@ public class TypeProduct extends TypeT
   @Override
   public CandidatesList refine(TypeT obj)
   { if (obj.typeOf().equals(this.typeOf()))
-    { //System.out.println("Test when compare recursive type, really run here????????");
-      TypeProduct that=(TypeProduct)obj;
+    { TypeProduct that=(TypeProduct)obj;
       return new CandidatesList(new DeltaProduct(this.values.getUnknownDeltas(that.values)),new CandidatesList());
     }
     else{ throw new RuntimeException(obj+" is NOT of TypeProduct");}  
