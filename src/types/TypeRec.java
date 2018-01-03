@@ -40,51 +40,8 @@ public class TypeRec extends TypeT
  
   @Override
   public double weight() { return this.typeBody.weight();}
-  @Override
+ @Override
   public CandidatesList refine(TypeT obj) 
-  {if(obj.typeOf().equals(this.typeOf()))
-    { TypeRec that=(TypeRec)obj;
-      if(this.equals(that)) return new CandidatesList(new Id(this), new CandidatesList());
-      else//These two values are not identical
-      if(this.typeBody.typeOf().isUNION()&&that.typeBody.typeOf().isUNION())
-      { System.out.println("Run here????????");
-        TypeUnion orig=(TypeUnion) this.typeBody;
-        TypeUnion targ=(TypeUnion) that.typeBody;
-        if(orig.isNil()||targ.isNil()) return orig.refine(targ);
-        else//both of them are non-empty Rec TYPE
-        { System.out.println("Both are non-empty REC TYPE");
-          if(orig.getValue().typeOf().isPRODUCT()&&targ.getValue().typeOf().isPRODUCT())
-          { TypeProduct insideOrig=(TypeProduct) orig.getValue();
-            TypeProduct insideTarg=(TypeProduct) targ.getValue();
-            
-            ListOfLabelandTypeTs listOrig=insideOrig.getValues();
-            ListOfLabelandTypeTs listTarg=insideTarg.getValues();
-            
-            if(!listOrig.isEmptyListOfLabelandTypeTs()&&!listTarg.isEmptyListOfLabelandTypeTs())
-            { DeltaRec path1, path2, path3;
-              path1=new DeltaRec(new StepList(new Unknown(listOrig.head().getTypeT(), listTarg.head().getTypeT()), new StepList(new UnknownRest(listOrig.rest(), listTarg.rest()), new StepList())));  
-              path2=new DeltaRec(new StepList(new Deletion(listOrig.head().getTypeT()), new StepList(new UnknownRest(listOrig.rest(), listTarg), new StepList())));
-              path3=new DeltaRec(new StepList(new Insertion(listTarg.head().getTypeT()), new StepList(new UnknownRest(listOrig, listTarg.rest()), new StepList())));
-              return new CandidatesList(path1,new CandidatesList()).insert_cand(path2).insert_cand(path3);
-            }
-            else if(listOrig.isEmptyListOfLabelandTypeTs()&&!listTarg.isEmptyListOfLabelandTypeTs())
-            { DeltaRec path= new DeltaRec(new StepList(new Insertion(listTarg.head().getTypeT()), new StepList(new UnknownRest(listOrig, listTarg.rest()), new StepList())));
-              return new CandidatesList(path, new CandidatesList());
-            }
-            else if(!listOrig.isEmptyListOfLabelandTypeTs()&&listTarg.isEmptyListOfLabelandTypeTs())
-            { DeltaRec path= new DeltaRec(new StepList(new Deletion(listOrig.head().getTypeT()), new StepList(new UnknownRest(listOrig.rest(), listTarg), new StepList())));
-              return new CandidatesList(path, new CandidatesList());
-            }
-            else //both empty only used for recursion
-            { DeltaRec path=new DeltaRec(new StepList());
-              return new CandidatesList(path, new CandidatesList());
-            }    
-          }
-          else{ throw new RuntimeException("The inside TYPE of this and that should be PRODUCT TYPE.");}
-        }
-      }
-      else{ throw new RuntimeException("The unfolding TYPE of this and that should be UNION TYPE.");}
-    }  
-    else { throw new RuntimeException("This obj="+obj+" is not the same TypeRecursive");}
-  }  
+  { throw new UnsupportedOperationException("Not supported yet, this refine will be implemented in Unknown refine"); 
+  } 
 }

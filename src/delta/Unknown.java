@@ -5,7 +5,11 @@ import similarity.Sim;
 import solution.CandidatesList;
 import types.TypeList;
 import types.TypeMultiset;
+import types.TypeProduct;
+import types.TypeRec;
 import types.TypeSet;
+import types.TypeUnion;
+import utility.ListOfLabelandTypeTs;
 
 //Since in TypeT there is no value represented by null
 //The orig and targ in Unknown are never be null.
@@ -49,8 +53,28 @@ public class Unknown extends Delta
         if(mset1.isEmptyMultiset()&&mset2.isEmptyMultiset())
         { return new CandidatesList(new Id(mset1), new CandidatesList());}
         else return mset1.refine(mset2);
+      }  
+      else if(this.orig.typeOf().isREC() && this.targ.typeOf().isREC())
+      { System.out.println("If the codes are running here??????");
+        if(this.orig.equals(this.targ)) 
+        { return new CandidatesList(new Id(this.orig), new CandidatesList());}
+        else//These two values are not identical
+        { TypeRec rec1= (TypeRec) this.orig;
+          TypeRec rec2= (TypeRec) this.targ;
+          if(!rec1.getBody().typeOf().isUNION()||!rec2.getBody().typeOf().isUNION())
+          { throw new RuntimeException("One or both of these recurtive type do not contain union body."); }
+          TypeUnion union1 = (TypeUnion) rec1.getBody();
+          TypeUnion union2 = (TypeUnion) rec2.getBody();
+          if(!union1.getValue().typeOf().isPRODUCT()||!union2.getValue().typeOf().isPRODUCT())
+          { throw new RuntimeException("One or both of these union values do not contain product value."); } 
+          TypeProduct p1 = (TypeProduct) union1.getValue();
+          TypeProduct p2 = (TypeProduct) union2.getValue();
+          ListOfLabelandTypeTs l1=p1.getValues();
+          ListOfLabelandTypeTs l2=p2.getValues();
+          return l1.refine(l2);
+        }
       }    
-      return this.orig.refine(this.targ);
+      else return this.orig.refine(this.targ);
     }
     else 
     { throw new RuntimeException("orig="+this.orig+" and targ="+this.targ+" are values of different TYPE cannot be compared");}

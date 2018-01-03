@@ -1,8 +1,13 @@
 
 package utility;
 
+import delta.Deletion;
+import delta.DeltaRec;
+import delta.Insertion;
 import delta.Unknown;
+import delta.UnknownRest;
 import solution.CandidatesList;
+import solution.StepList;
 import typeSystem.TYPE;
 import types.TypeT;
 
@@ -85,13 +90,37 @@ public class ListOfLabelandTypeTs extends TypeT
    else { throw new RuntimeException("Illegal constructor usage in ListOfLabelandTypeTs getFinalDeltas() method.");}
  }                
 
-    @Override
-    public TYPE typeOf() {
+ @Override
+ public TYPE typeOf() 
+ {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+ }
 
-    @Override
-    public CandidatesList refine(TypeT obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+ @Override
+ public CandidatesList refine(TypeT obj) 
+ { if (obj instanceof ListOfLabelandTypeTs)
+   { ListOfLabelandTypeTs that=(ListOfLabelandTypeTs)obj;
+     
+     if(!this.isEmptyListOfLabelandTypeTs()&&!that.isEmptyListOfLabelandTypeTs())
+     { DeltaRec path1, path2, path3;
+       path1=new DeltaRec(new StepList(new Unknown(this.head().getTypeT(), that.head().getTypeT()), new StepList(new UnknownRest(this.rest(), that.rest()), new StepList())));  
+       path2=new DeltaRec(new StepList(new Deletion(this.head().getTypeT()), new StepList(new UnknownRest(this.rest(), that), new StepList())));
+       path3=new DeltaRec(new StepList(new Insertion(that.head().getTypeT()), new StepList(new UnknownRest(this, that.rest()), new StepList())));
+       return new CandidatesList(path1,new CandidatesList()).insert_cand(path2).insert_cand(path3);
+     }
+     else if(this.isEmptyListOfLabelandTypeTs()&&!that.isEmptyListOfLabelandTypeTs())
+     { DeltaRec path= new DeltaRec(new StepList(new Insertion(that.head().getTypeT()), new StepList(new UnknownRest(this, that.rest()), new StepList())));
+       return new CandidatesList(path, new CandidatesList());
+     }
+     else if(!this.isEmptyListOfLabelandTypeTs()&&that.isEmptyListOfLabelandTypeTs())
+     { DeltaRec path= new DeltaRec(new StepList(new Deletion(this.head().getTypeT()), new StepList(new UnknownRest(this.rest(), that), new StepList())));
+       return new CandidatesList(path, new CandidatesList());
+     }
+     else //both empty only used for recursion
+     { DeltaRec path=new DeltaRec(new StepList());
+       return new CandidatesList(path, new CandidatesList());
+     }    
+   }
+   else{ throw new RuntimeException("The inside TYPE of this and that should be PRODUCT TYPE.");} 
+ }
 }

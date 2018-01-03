@@ -68,6 +68,9 @@ public class DIFF {
         String strVALUE1=FileParser.readFileToString(args[2]);//read the first .VALUE file to a String
         TypeT resV1=ParseVALUEresult.parseVALUE(resTYPE.getResult(), strVALUE1).getResult();//parse VALUE1
         System.out.println("VAL1:   "+resV1);
+        System.out.println("VAL1.TYPE="+resV1.typeOf());
+
+        System.out.println("Comparable TYPE:"+resTYPE.equals(resV1.typeOf()));
 
         String strVALUE2=FileParser.readFileToString(args[3]);//read the second .VALUE file to a String
         TypeT resV2=ParseVALUEresult.parseVALUE(resTYPE.getResult(), strVALUE2).getResult();//parse VALUE2

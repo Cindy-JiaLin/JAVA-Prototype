@@ -48,7 +48,8 @@ public class TypeUnion extends TypeT
   @Override
   public CandidatesList refine(TypeT obj) 
   { if(obj.typeOf().equals(this.typeOf()))
-    { TypeUnion that=(TypeUnion)obj;
+    { //System.out.println("Test when compare recursive type, run here????????");
+      TypeUnion that=(TypeUnion)obj;
       if(!this.label.equals(that.label))
       { return new CandidatesList(new DeltaUnion("dismatch: ("+this.label+"-to-"+that.label+")", new Change(this,that)),new CandidatesList());}  
       else{ return new CandidatesList(new DeltaUnion(this.label, new Unknown(this.t, that.t)),new CandidatesList());}  
