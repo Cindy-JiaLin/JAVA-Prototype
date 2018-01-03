@@ -23,8 +23,9 @@ public class TypeUnion extends TypeT
   @Override
   public TYPE typeOf() { return this.T;}
   public TypeT getValue(){ return this.t;}
-  //public String getLabel(){ return this.label;}
-  public boolean isNil(){ return this.label=="nil";}
+  public String getLabel(){ return this.label;}
+  
+  public boolean isNil(){ return this.t.typeOf().isUNIT();}
   
   @Override
   public boolean equals(Object obj)

@@ -33,13 +33,15 @@ public class Unknown extends Delta
   @Override
   public CandidatesList refine()
   { if(this.orig.typeOf().equals(this.targ.typeOf()))
-    { if(this.orig.typeOf().isLIST()&&this.targ.typeOf().isLIST())
+    { // Compare two empty lists  
+      if(this.orig.typeOf().isLIST()&&this.targ.typeOf().isLIST())
       { TypeList list1=(TypeList) this.orig;
         TypeList list2=(TypeList) this.targ;
         if(list1.isEmptyList()&&list2.isEmptyList())
         { return new CandidatesList(new Id(list1), new CandidatesList());}
         else return list1.refine(list2);
-      }  
+      } 
+      // Compare two empty sets
       else if(this.orig.typeOf().isSET()&&this.targ.typeOf().isSET())
       { TypeSet set1=(TypeSet) this.orig;
         TypeSet set2=(TypeSet) this.targ;
@@ -47,33 +49,26 @@ public class Unknown extends Delta
         { return new CandidatesList(new Id(set1), new CandidatesList());}
         else return set1.refine(set2);
       }
+      // Compare two empty multisets
       else if(this.orig.typeOf().isMSET()&&this.targ.typeOf().isMSET())
       { TypeMultiset mset1=(TypeMultiset) this.orig;
         TypeMultiset mset2=(TypeMultiset) this.targ;
         if(mset1.isEmptyMultiset()&&mset2.isEmptyMultiset())
         { return new CandidatesList(new Id(mset1), new CandidatesList());}
         else return mset1.refine(mset2);
-      }  
+      } 
       else if(this.orig.typeOf().isREC() && this.targ.typeOf().isREC())
-      { System.out.println("If the codes are running here??????");
-        if(this.orig.equals(this.targ)) 
-        { return new CandidatesList(new Id(this.orig), new CandidatesList());}
-        else//These two values are not identical
-        { TypeRec rec1= (TypeRec) this.orig;
-          TypeRec rec2= (TypeRec) this.targ;
-          if(!rec1.getBody().typeOf().isUNION()||!rec2.getBody().typeOf().isUNION())
-          { throw new RuntimeException("One or both of these recurtive type do not contain union body."); }
-          TypeUnion union1 = (TypeUnion) rec1.getBody();
-          TypeUnion union2 = (TypeUnion) rec2.getBody();
-          if(!union1.getValue().typeOf().isPRODUCT()||!union2.getValue().typeOf().isPRODUCT())
-          { throw new RuntimeException("One or both of these union values do not contain product value."); } 
-          TypeProduct p1 = (TypeProduct) union1.getValue();
-          TypeProduct p2 = (TypeProduct) union2.getValue();
-          ListOfLabelandTypeTs l1=p1.getValues();
-          ListOfLabelandTypeTs l2=p2.getValues();
-          return l1.refine(l2);
-        }
-      }    
+      { TypeRec rec1 =(TypeRec) this.orig;
+        TypeRec rec2 =(TypeRec) this.targ;
+        if(rec1.getBody().typeOf().isUNION() && rec2.getBody().typeOf().isUNION())
+        { TypeUnion insideUnion1 = (TypeUnion) rec1.getBody();
+          TypeUnion insideUnion2 = (TypeUnion) rec2.getBody();
+          if(insideUnion1.isNil()&&insideUnion2.isNil())
+          { return new CandidatesList(new Id(rec1), new CandidatesList());}
+          else return rec1.refine(rec2);
+        }    
+        else throw new RuntimeException("The type body of recursive type is only union currently.");
+      }   
       else return this.orig.refine(this.targ);
     }
     else 

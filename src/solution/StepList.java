@@ -4,6 +4,8 @@ package solution;
 import delta.Delta;
 import delta.DeltaList;
 import delta.DeltaMultiset;
+import delta.DeltaProduct;
+import delta.DeltaRec;
 import delta.DeltaSet;
 import delta.UnknownRest;
 import similarity.Sim;
@@ -142,7 +144,11 @@ public class StepList
       { DeltaMultiset d=(DeltaMultiset)cands.fstDelta();
         return release(cands.restCands()).insert(d.getStepList());
       }
-      else{ throw new RuntimeException("This release method will apply to the DeltaList, DeltaSet, DeltaMultiset.\n"+cands);}  
+      else if(cands.fstDelta() instanceof DeltaRec)
+      { DeltaRec d =(DeltaRec) cands.fstDelta();
+        return release(cands.restCands()).insert(d.getStepList());
+      }      
+      else{ throw new RuntimeException("This release method will apply to the DeltaList, DeltaSet, DeltaMultiset and DeltaRec.\n"+cands);}  
     }
     else{ return new ListOfStepList();}    
   } 

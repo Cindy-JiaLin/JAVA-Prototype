@@ -14,7 +14,7 @@ public abstract class TypeT
   
   //Main method to get the difference between orig and targ
   public static Delta delta(TypeT orig, TypeT targ)
-  { double whole_weight=orig.weight()+targ.weight();
+  { //double whole_weight=orig.weight()+targ.weight();
     return new CandidatesList(new Unknown(orig, targ),new CandidatesList()).solutions().fstDelta();
   } 
 }

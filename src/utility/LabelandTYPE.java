@@ -17,7 +17,7 @@ import typeSystem.TYPE;
     public boolean equals(Object obj)
     { if(obj instanceof LabelandTYPE)
       { LabelandTYPE that=(LabelandTYPE)obj;
-        return this.label==that.label&&this.T.equals(that.T);
+        return (this.label == null ? that.label == null : this.label.equals(that.label))&&this.T.equals(that.T);
       }
       else { throw new RuntimeException("This obj="+obj+" is not instance of LabelandTYPE.");}      
     } 

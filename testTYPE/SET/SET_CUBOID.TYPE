@@ -1,0 +1,2 @@
+# TYPE of SET of CUBOID
+SET(PRODUCT(l.REAL(0.5)*w.REAL(0.5)*h.REAL(0.2)))

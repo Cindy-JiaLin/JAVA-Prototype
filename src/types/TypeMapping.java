@@ -5,9 +5,7 @@ import delta.DeltaMapping;
 import delta.DeltaSet;
 import solution.CandidatesList;
 import typeSystem.TYPE;
-import utility.LabelandTYPE;
 import utility.LabelandTypeT;
-import utility.ListOfLabelandTYPEs;
 import utility.ListOfLabelandTypeTs;
 
 public class TypeMapping extends TypeT
@@ -28,6 +26,10 @@ public class TypeMapping extends TypeT
        
   public static TypeMapping EMPTY_MAPPING(TYPE pairBaseTYPE){ return pairBaseTYPE.getEmptyMapping(); }
   public boolean isEmptyMapping(){ return this.a==null&&this.b==null&&this.rest==null;}
+  
+  public LabelandTypeT getDomFst(){ return this.a;}
+  public LabelandTypeT getCodFst(){ return this.b;}
+  public TypeMapping getRest(){ return this.rest;}
   
   @Override
   public TYPE typeOf(){ return TYPE.MAPPING(T.getMembers());}  
@@ -82,7 +84,7 @@ public class TypeMapping extends TypeT
     else
     { ListOfLabelandTypeTs pairLabelandTypeTs=new ListOfLabelandTypeTs(a,new ListOfLabelandTypeTs(b,new ListOfLabelandTypeTs()));
       return new TypeSet(TYPE.PRODUCT(this.T.getMembers()), new TypeProduct(TYPE.PRODUCT(this.T.getMembers()),pairLabelandTypeTs), this.rest.map_to_set());} 
-  }   
+  }        
   
   @Override
   public double weight() { return this.map_to_set().weight(); }

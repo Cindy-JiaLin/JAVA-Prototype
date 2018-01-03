@@ -5,7 +5,6 @@ import types.TypeList;
 import types.TypeMapping;
 import types.TypeMultiset;
 import types.TypeSet;
-import utility.LabelandTYPE;
 import utility.ListOfLabelandTYPEs;
 
 public class TYPE
@@ -70,22 +69,25 @@ public class TYPE
   public final static TYPE VAR(String varName){ return new TYPE(sVAR, varName);}
   public final static TYPE REC(String varName, TYPE TypeBody){ return new TYPE(sREC, varName, TypeBody);}
   
-  public boolean isUNIT(){ return this.name==sUNIT;}
-  public boolean isBOOL(){ return this.name==sBOOL;}
-  public boolean isNAT(){ return this.name==sNAT;}
-  public boolean isREAL(){ return this.name==sREAL;}
-  public boolean isCHAR(){ return this.name==sCHAR;}
-  public boolean isPRIMITIVE(){ return this.name==sUNIT||this.name==sBOOL||this.name==sNAT||this.name==sCHAR;}
+  public boolean isUNIT(){ return (this.name == null ? sUNIT == null : this.name.equals(sUNIT));}
+  public boolean isBOOL(){ return (this.name == null ? sBOOL == null : this.name.equals(sBOOL));}
+  public boolean isNAT(){ return (this.name == null ? sNAT == null : this.name.equals(sNAT));}
+  public boolean isREAL(){ return (this.name == null ? sREAL == null : this.name.equals(sREAL));}
+  public boolean isCHAR(){ return (this.name == null ? sCHAR == null : this.name.equals(sCHAR));}
+  public boolean isPRIMITIVE(){ return (this.name == null ? sUNIT == null : this.name.equals(sUNIT))
+                                     ||(this.name == null ? sBOOL == null : this.name.equals(sBOOL))
+                                     ||(this.name == null ? sNAT == null : this.name.equals(sNAT))
+                                     ||(this.name == null ? sCHAR == null : this.name.equals(sCHAR));}
   
-  public boolean isPRODUCT(){ return this.name==sPRODUCT;}
-  public boolean isUNION(){ return this.name==sUNION;}
-  public boolean isSET(){ return this.name==sSET;}
-  public boolean isMSET(){ return this.name==sMSET;}
-  public boolean isLIST(){ return this.name==sLIST;}
-  public boolean isMAPPING(){ return this.name==sMAPPING;}
+  public boolean isPRODUCT(){ return (this.name == null ? sPRODUCT == null : this.name.equals(sPRODUCT));}
+  public boolean isUNION(){ return (this.name == null ? sUNION == null : this.name.equals(sUNION));}
+  public boolean isSET(){ return (this.name == null ? sSET == null : this.name.equals(sSET));}
+  public boolean isMSET(){ return (this.name == null ? sMSET == null : this.name.equals(sMSET));}
+  public boolean isLIST(){ return (this.name == null ? sLIST == null : this.name.equals(sLIST));}
+  public boolean isMAPPING(){ return (this.name == null ? sMAPPING == null : this.name.equals(sMAPPING));}
   
-  public boolean isREC(){ return this.name==sREC;}
-  public boolean isVAR(){ return this.name==sVAR;}
+  public boolean isREC(){ return (this.name == null ? sREC == null : this.name.equals(sREC));}
+  public boolean isVAR(){ return (this.name == null ? sVAR == null : this.name.equals(sVAR));}
                   
   
   public double getAcc()
@@ -155,7 +157,7 @@ public class TYPE
   public boolean equals(Object obj)
   { if (obj instanceof TYPE)
     { TYPE that=(TYPE)obj;
-      if(this.isPRIMITIVE()&&that.isPRIMITIVE()){ return this.name==that.name;}
+      if(this.isPRIMITIVE()&&that.isPRIMITIVE()){ return (this.name == null ? that.name == null : this.name.equals(that.name));}
       else if(this.isREAL()&&that.isREAL()){ return this.acc==that.acc;}
       //For Structured TYPEs, if they are the same TYPE, the name of them should be equals to each other.
       else if(this.isPRODUCT()&&that.isPRODUCT()){ return this.labelandTYPEs.equals(that.labelandTYPEs);}
@@ -164,10 +166,10 @@ public class TYPE
       else if(this.isSET()&&that.isSET()){ return this.T1.equals(that.T1);}
       else if(this.isMSET()&&that.isMSET()){ return this.T1.equals(that.T1);}
       else if(this.isLIST()&&that.isLIST()){ return this.T1.equals(that.T1);}
-      else if(this.isVAR()&&that.isVAR()){ return this.varName==that.varName;}
+      else if(this.isVAR()&&that.isVAR()){ return (this.varName == null ? that.varName == null : this.varName.equals(that.varName));}
       else if(this.isREC()||that.isREC())
       { if(this.isREC()&&that.isREC())
-        { if(this.varName==that.varName){ return this.T1.equals(that.T1);}  
+        { if(this.varName == null ? that.varName == null : this.varName.equals(that.varName)){ return this.T1.equals(that.T1);}  
           //if the varNames are different, unify varNames with this.varName, e.g. REC(x:Tx) REC(y:Ty) maybe the same REC TYPE.
           else{ return this.equals(that.unifyVarName(that.varName, this.varName));} 
         }
@@ -199,8 +201,8 @@ public class TYPE
     else if(isREAL()){ return false;}
     else if(isPRODUCT()||isUNION()||isMAPPING()){ return this.labelandTYPEs.contains(varName);}
     else if(isSET()||this.isMSET()||this.isLIST()){ return this.T1.contains(varName);}
-    else if(isVAR()){ return this.varName==varName;}//When the VAR TYPE is contains in TYPE body.
-    else if(isREC()){ return this.varName==varName||this.T1.contains(varName);}
+    else if(isVAR()){ return (this.varName == null ? varName == null : this.varName.equals(varName));}//When the VAR TYPE is contains in TYPE body.
+    else if(isREC()){ return (this.varName == null ? varName == null : this.varName.equals(varName))||this.T1.contains(varName);}
     else { throw new RuntimeException("There is no more TYPE at this stage, TYPE contains(varName).");}
   }   
   //Replace the origVarName by the targVarName
@@ -215,7 +217,7 @@ public class TYPE
     else if(isLIST()){ return LIST(this.T1.unifyVarName(origVarName, targVarName));}
     else if(isVAR()){ return VAR(targVarName);}
     else if(isREC())
-    { if(this.varName==origVarName){ return REC(targVarName, this.T1.unifyVarName(origVarName, targVarName));}
+    { if(this.varName == null ? origVarName == null : this.varName.equals(origVarName)){ return REC(targVarName, this.T1.unifyVarName(origVarName, targVarName));}
       else{ return REC(this.varName, this.T1.unifyVarName(origVarName, targVarName));}
     }
     else { throw new RuntimeException("There is no more TYPE at this stage, TYPE unifyVarName(varName).");}  
@@ -226,11 +228,11 @@ public class TYPE
   // This method is used to replace the varName in Target by T
   public static TYPE substitute(String varName, TYPE T, TYPE Target)
   { if(!Target.contains(varName)){return Target;}
-    else if(Target.isVAR()&&Target.varName==varName){ return T;}
+    else if(Target.isVAR()&&(Target.varName == null ? varName == null : Target.varName.equals(varName))){ return T;}
     else if(Target.isPRODUCT()) { return PRODUCT(Target.labelandTYPEs.substitute(varName, T));}
     else if(Target.isUNION()) { return UNION(Target.labelandTYPEs.substitute(varName, T));}  
     else if(Target.isREC())
-    { if(Target.varName==varName){ return Target; }
+    { if(Target.varName == null ? varName == null : Target.varName.equals(varName)){ return Target; }
       else{ return REC(Target.varName, substitute(varName, T, Target.T1));} 
       // not quite correct as T may contain Target.varName
       // in this case use unifyVarName 
