@@ -1,0 +1,4 @@
+# TYPE: SET(SET(PRODUCT(size.REAL(0.5)*name.CHAR)))
+
+{{(size.57.7,name.A),(size.78.9, name.M)},{(size.66.5, name.T),(size.12.0,name.B),(size.13.6, name.G)}}
+

@@ -13,6 +13,7 @@ import types.TypeT;
 import delta.Delta;
 import types.TypeBool;
 import types.TypeChar;
+import types.TypeString;
 import types.TypeList;
 import types.TypeMapping;
 import types.TypeMultiset;
@@ -39,13 +40,14 @@ public class DIFF {
       { if(!args[0].equals("-t")||!args[1].endsWith(".TYPE"))
         { System.out.print("Please enter the correct option '-t .TYPE file' to present a type.");}
         
-        System.out.print("\nFileName: "+args[1]);
         String strTYPE=FileParser.readFileToString(args[1]);//read the file to a String
         ParseTYPEresult resTYPE=ParseTYPEresult.parseTYPE(new ListOfVars(), strTYPE);//parse TYPE
-        System.out.print(" Unfold this type: \n"+TYPE.unfold(resTYPE.getResult())+"\n");
+               
         String fileName="testResult/TYPE_Res/"+cutoff(args[1],".TYPE")+".RES";
         String msg="\nFileName: "+args[1]+"\nparseTYPE: \n"+resTYPE+"\n"+"Unfold this type: \n"+TYPE.unfold(resTYPE.getResult())+"\n";
         writefile(fileName, msg.toString());
+
+        System.out.println(msg);
 
       }
       else if(args.length==3)//testVALUEparser.sh
@@ -55,15 +57,20 @@ public class DIFF {
         String strTYPE=FileParser.readFileToString(args[1]);//read the .TYPE file to a String
         ParseTYPEresult resTYPE=ParseTYPEresult.parseTYPE(new ListOfVars(), strTYPE);//parse TYPE
 
+
         String strVALUE=FileParser.readFileToString(args[2]);//read the .VALUE file to a String
+        //System.out.println("strVALUE="+strVALUE);
         TypeT resV=ParseVALUEresult.parseVALUE(resTYPE.getResult(), strVALUE).getResult();//parse VALUE
-        System.out.print("\nTypeT: "+resV+"\n");
+                
+        System.out.println("resV="+resV);
         
+        //TypeT model = model(resTYPE.getResult(), resV);
 
         String fileName="testResult/VALUE_Res/"+cutoff(args[2],".VALUE")+".RES";
-        String msg="\nTypeT: "+resV+"\n";
-        writefile(fileName, msg.toString());
+        //String msg="\nTypeT: "+model+"\n";
+        //writefile(fileName, msg.toString());
 
+        //System.out.println(msg);
       } 
       else// the args.length==4  present_Sim_Delta.sh
       { if(!args[0].equals("-d")||!args[1].endsWith(".TYPE")||!args[2].endsWith(".VALUE")||!args[3].endsWith(".VALUE"))
@@ -143,7 +150,11 @@ public class DIFF {
       else if(T.isCHAR() && t.typeOf().isCHAR())
       { TypeChar v = (TypeChar)t;
         return new TypeChar(T, v.getValue());
-      }  
+      } 
+      else if(T.isSTRING() && t.typeOf().isSTRING())
+      { TypeString v = (TypeString)t;
+        return new TypeString(T, v.getValue());
+      } 
       // model structured types one by one
       else if(T.isPRODUCT() && t.typeOf().isPRODUCT() && T.equals(t.typeOf()))
       { TypeProduct v =(TypeProduct)t;
@@ -162,7 +173,8 @@ public class DIFF {
         else{ return new TypeList(T.getBaseTYPE(), v.getFst(), v.getRest());}
       }    
       else if(T.isSET() && t.typeOf().isSET()&&T.getBaseTYPE().equals(t.typeOf().getBaseTYPE()))
-      { TypeSet v = (TypeSet) t;
+      { System.out.println("T="+T);
+        TypeSet v = (TypeSet) t;
         if(v.isEmptySet()) return new TypeSet(T.getBaseTYPE());
         else{ return new TypeSet(T.getBaseTYPE(), v.getFst(), v.getRest());}
       }    

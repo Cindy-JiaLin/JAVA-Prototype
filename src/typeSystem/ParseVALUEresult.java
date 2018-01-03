@@ -3,6 +3,7 @@ package typeSystem;
 
 import types.TypeBool;
 import types.TypeChar;
+import types.TypeString;
 import types.TypeList;
 import types.TypeMapping;
 import types.TypeMultiset;
@@ -94,6 +95,16 @@ public class ParseVALUEresult
     { String c=str.substring(0,1);
       str=cutoff(str, c);
       return ok(new TypeChar(T,c.charAt(0)), str);
+    }
+    else if(T.isSTRING())
+    { if(str.startsWith("'"))
+      { str=cutoff(str,"'");
+        int dotIndex=str.indexOf("'");
+          if(dotIndex==-1)throw new RuntimeException("Has no ''' in this str.");
+        String content=str.substring(0, dotIndex).trim();
+        return ok(new TypeString(T, content), str);
+      }
+      else{ return error(str, "Expected a STRING TYPE value.");}
     } 
     else if(T.isPRODUCT())
     {   if(!str.startsWith("(")){ return error(str, "Expected a '(' at the beginning of a PRODUCT TYPE value.");}
@@ -171,6 +182,7 @@ public class ParseVALUEresult
       str=cutoff(str,"{");
         if(str.startsWith("}")){ str=cutoff(str,"}"); return ok(TypeSet.EMPTY_SET(T.getBaseTYPE()),str);}
       ParseVALUEresult head=parseVALUE(T.getBaseTYPE(),str);
+        //System.out.println("head="+head);
         if(head.getError()!=null){ return head;}  
       str=head.getRest().trim(); 
       TypeSet set=TypeSet.EMPTY_SET(T.getBaseTYPE()).add(head.getResult());

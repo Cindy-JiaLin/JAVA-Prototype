@@ -1,6 +1,6 @@
 # Test both sets are non-emtpy sets
 # Implement the Example 5.4.1 on page 79 and the Example 5.4.3 on page 82
-java -Xss5M -cp lib dcprototype.DIFF -d testTYPE/SET/SET_REAL05.TYPE testVALUE/Examples/SET_EX5.4.1_A.VALUE testVALUE/Examples/SET_EX5.4.1_B.VALUE
+#java -Xss5M -cp lib dcprototype.DIFF -d testTYPE/SET/SET_REAL05.TYPE testVALUE/Examples/SET_EX5.4.1_A.VALUE testVALUE/Examples/SET_EX5.4.1_B.VALUE
 
 
 # Test both multisets are non-emtpy sets
